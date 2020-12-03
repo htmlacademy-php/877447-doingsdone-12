@@ -1,7 +1,7 @@
 # Личный проект «Дела в Порядке»
 
 * Студент: [Ирина Рамицан](https://up.htmlacademy.ru/php/12/user/877447).
-* Наставник:[Анна Смоленцева](https://htmlacademy.ru/profile/id1402027).
+* Наставник: [Анна Смоленцева](https://htmlacademy.ru/profile/id1402027).
 
 ---
 
