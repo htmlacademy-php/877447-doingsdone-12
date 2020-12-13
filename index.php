@@ -68,13 +68,13 @@ $show_complete_tasks = rand(0, 1);
                 ],
                 [
                     'title' => 'Купить корм для кота',
-                    'date' => 'null',
+                    'date' => null,
                     'category' => 'Домашние дела',
                     'done' => false
                 ],
                 [
                     'title' => 'Заказать пиццу',
-                    'date' => 'null',
+                    'date' => null,
                     'category' => 'Домашние дела',
                     'done' => false
                 ]
@@ -83,14 +83,14 @@ $show_complete_tasks = rand(0, 1);
 
           <nav class="main-navigation">
             <ul class="main-navigation__list">
-            <?php $index = 0; ?>
-            <?php while($index < 5): ?>
+
+            <?php foreach ($projects as $project): ?>
               <li class="main-navigation__list-item">
-                <a class="main-navigation__list-item-link" href="#"><?= $projects[$index] ?></a>
+                <a class="main-navigation__list-item-link" href="#"><?= $project ?></a>
                 <span class="main-navigation__list-item-count">0</span>
               </li>
-              <?php $index++ ?>
-            <?php endwhile; ?>
+
+            <?php endforeach; ?>
             </ul>
           </nav>
 
@@ -126,12 +126,13 @@ $show_complete_tasks = rand(0, 1);
             <?php foreach ($tasks as $task): ?>
                 <?php if ($task['done'] == true && $show_complete_tasks == 0) {
                     continue;
-                }
-                 else if ($task['done'] == true && $show_complete_tasks == 1): ?>
-                    <tr class="tasks__item task task--completed">
-                <?php else: ?>
-                    <tr class="tasks__item task">
-                <?php endif; ?>
+				} ?>
+
+				<tr class="tasks__item task
+				<?php if ($task['done'] == true && $show_complete_tasks == 1): ?>
+					task--completed
+				<?php endif; ?> ">
+
               <td class="task__select">
                 <label class="checkbox task__checkbox">
                   <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
