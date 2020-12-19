@@ -83,13 +83,24 @@ $show_complete_tasks = rand(0, 1);
 
 					<nav class="main-navigation">
 						<ul class="main-navigation__list">
+							<?php
+							function get_tasks_summ($array, $title)
+							{
+								$summ_tasks = 0;
+								foreach ($array as $item) {
+									if ($item['category'] == $title) {
+										$summ_tasks++;
+									}
+								}
+								return $summ_tasks;
+							}
+							?>
 
 							<?php foreach ($projects as $project) : ?>
 								<li class="main-navigation__list-item">
 									<a class="main-navigation__list-item-link" href="#"><?= $project ?></a>
-									<span class="main-navigation__list-item-count">0</span>
+									<span class="main-navigation__list-item-count"><?= get_tasks_summ($tasks, $project) ?></span>
 								</li>
-
 							<?php endforeach; ?>
 						</ul>
 					</nav>
@@ -129,7 +140,10 @@ $show_complete_tasks = rand(0, 1);
 							}
 							?>
 
-							<tr class="tasks__item task <?php ($task['done'] == true && $show_complete_tasks == 1) ? 'task--completed' : '' ?> ">
+							<tr class="tasks__item task
+              <?php if ($task['done'] == true && $show_complete_tasks == 1) : ?>
+                  task--completed
+              <?php endif; ?> ">
 
 								<td class="task__select">
 									<label class="checkbox task__checkbox">
