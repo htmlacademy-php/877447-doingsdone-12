@@ -140,10 +140,7 @@ $show_complete_tasks = rand(0, 1);
 							}
 							?>
 
-							<tr class="tasks__item task
-              <?php if ($task['done'] == true && $show_complete_tasks == 1) : ?>
-                  task--completed
-              <?php endif; ?> ">
+							<tr class="tasks__item task <?php echo ($task['done'] == true && $show_complete_tasks == 1) ? 'task--completed' : ''  ?> ">
 
 								<td class="task__select">
 									<label class="checkbox task__checkbox">
