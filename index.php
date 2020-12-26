@@ -134,11 +134,12 @@ $show_complete_tasks = rand(0, 1);
 					</div>
 
 					<table class="tasks">
-						<?php foreach ($tasks as $task) : ?>
-							<?php if ($task['done'] == true && $show_complete_tasks == 0) {
+						<?php
+						foreach ($tasks as $task) {
+							if ($task['done'] == true && $show_complete_tasks == 0) {
 								continue;
 							}
-							?>
+						?>
 
 							<tr class="tasks__item task <?php echo ($task['done'] == true && $show_complete_tasks == 1) ? 'task--completed' : ''  ?> ">
 
@@ -154,7 +155,7 @@ $show_complete_tasks = rand(0, 1);
 								</td>
 								<td class="task__date"><?= $task['date'] ?></td>
 							</tr>
-						<?php endforeach; ?>
+						<?php } ?>
 						<!--показывать следующий тег <tr/>, если переменная $show_complete_tasks равна единице-->
 						<?php if ($show_complete_tasks == 1) : ?>
 							<tr class="tasks__item task task--completed">
