@@ -1,6 +1,5 @@
 <?php
-require('helpers.php');
-require('functions.php');
+require_once('settings.php');
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
 $projects = ['Входящие', 'Учеба', 'Работа', 'Домашние дела', 'Авто'];
@@ -42,6 +41,7 @@ $tasks = [
         'done' => false
     ]
 ];
+$title = 'Дела в порядке';
 
 $main_content = include_template('main.php', ['projects' => $projects, 'tasks' => $tasks, 'show_complete_tasks' => $show_complete_tasks]);
 $layout = include_template('layout.php', ['main_content' => $main_content, 'title' => $title]);
