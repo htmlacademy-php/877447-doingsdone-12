@@ -47,20 +47,8 @@
           continue;
         }
       ?>
-        <tr class="tasks__item task <?php echo ($task['done'] == true && $show_complete_tasks == 1) ? 'task--completed' : ''  ?>
-        <?php
-        $cur_date = time();
-        $quantity_seconds_in_hour = 3600;
-        $quantity_hours_in_day = 24;
-
-        if ($task['date'] != null) {
-          $task_date = strtotime($task['date']);
-          $diff = floor(($task_date - $cur_date) / $quantity_seconds_in_hour);
-        }
-
-        if ($diff <= $quantity_hours_in_day) {
-          echo 'task--important';
-        } ?>">
+        <tr class="tasks__item task <? echo ($task['done'] == true && $show_complete_tasks == 1) ? 'task--completed' : ''  ?>
+        <? echo ($task['done'] !== true && get_date_diff($task['data']) <= $quantity_hours_in_day) ? 'task--important' : '' ?>">
 
           <td class="task__select">
             <label class="checkbox task__checkbox">
