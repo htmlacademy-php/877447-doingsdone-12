@@ -42,7 +42,8 @@ $tasks = [
     ]
 ];
 $title = 'Дела в порядке';
+$quantity_hours_in_day = 24;
 
-$main_content = include_template('main.php', ['projects' => $projects, 'tasks' => $tasks, 'show_complete_tasks' => $show_complete_tasks]);
+$main_content = include_template('main.php', ['projects' => $projects, 'tasks' => $tasks, 'show_complete_tasks' => $show_complete_tasks, 'quantity_hours_in_day' => $quantity_hours_in_day]);
 $layout = include_template('layout.php', ['main_content' => $main_content, 'title' => $title]);
 print ($layout);
