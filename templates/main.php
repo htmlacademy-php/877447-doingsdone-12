@@ -48,7 +48,7 @@
         }
       ?>
         <tr class="tasks__item task <? echo ($task['done'] == true && $show_complete_tasks == 1) ? 'task--completed' : ''  ?>
-        <? echo ($task['done'] !== true && get_date_diff($task['date']) <= $quantity_hours_in_day) ? 'task--important' : '' ?>">
+        <? echo ($task['done'] !== true && $task['date'] !== null && get_date_diff($task['date']) <= 24) ? 'task--important' : '' ?>">
 
           <td class="task__select">
             <label class="checkbox task__checkbox">
