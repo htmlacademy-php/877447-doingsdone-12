@@ -6,25 +6,25 @@ $projects = ['Входящие', 'Учеба', 'Работа', 'Домашние
 $tasks = [
     [
         'title' => 'Собеседование в IT компании',
-        'date' => '01.12.2019',
+        'date' => '21.01.2021',
         'category' => 'Работа',
         'done' => false
     ],
     [
         'title' => 'Выполнить тестовое задание',
-        'date' => '25.12.2019',
+        'date' => '20.01.2021',
         'category' => 'Работа',
         'done' => false
     ],
     [
         'title' => 'Сделать задание первого раздела',
-        'date' => '21.12.2019',
+        'date' => '21.12.2020',
         'category' => 'Учеба',
         'done' => true
     ],
     [
         'title' => 'Встреча с другом',
-        'date' => '22.12.2019',
+        'date' => '22.03.2021',
         'category' => 'Входящие',
         'done' => false
     ],
@@ -42,7 +42,8 @@ $tasks = [
     ]
 ];
 $title = 'Дела в порядке';
+$quantity_hours_in_day = 24;
 
-$main_content = include_template('main.php', ['projects' => $projects, 'tasks' => $tasks, 'show_complete_tasks' => $show_complete_tasks]);
+$main_content = include_template('main.php', ['projects' => $projects, 'tasks' => $tasks, 'show_complete_tasks' => $show_complete_tasks, 'quantity_hours_in_day' => $quantity_hours_in_day]);
 $layout = include_template('layout.php', ['main_content' => $main_content, 'title' => $title]);
 print ($layout);
