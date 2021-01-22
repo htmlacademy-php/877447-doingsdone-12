@@ -1,4 +1,4 @@
-CREATE DATABASE doingsdone
+CREATE DATABASE IF NOT EXISTS doingsdone
 DEFAULT CHARACTER SET utf8
 DEFAULT COLLATE utf8_general_ci;
 
@@ -9,7 +9,7 @@ CREATE TABLE users (
   user_name VARCHAR(128) NOT NULL UNIQUE,
   user_email VARCHAR(128) NOT NULL UNIQUE,
   user_password VARCHAR(255) NOT NULL,
-  registration_date TIMESTAMP DEFAULT
+  registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE projects (
@@ -24,6 +24,6 @@ CREATE TABLE tasks (
   task_user INT NOT NULL,
   date_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   date_deadline TIMESTAMP,
-  task_status BIT DEFAULT NOT NULL,
+  task_status BIT(1) DEFAULT 0 NOT NULL,
   from_project INT NOT NULL
 );
