@@ -39,8 +39,8 @@ SELECT * FROM projects WHERE user_id = 3;
 -- получить список из всех задач для одного проекта;
 SELECT * FROM tasks WHERE from_project = 2;
 
--- пометить задачу как выполненную; update tasks
-UPDATE tasks SET task_status = true WHERE task_title = 'Встреча с другом';
+-- пометить задачу как выполненную;
+UPDATE tasks SET task_status = true WHERE id = 4;
 
--- обновить название задачи по её идентификатору update tasks
+-- обновить название задачи по её идентификатору
 UPDATE tasks SET task_title = 'Сходить в кино' WHERE id = 6;
