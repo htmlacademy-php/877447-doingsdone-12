@@ -15,7 +15,8 @@ CREATE TABLE users (
 CREATE TABLE projects (
   id INT AUTO_INCREMENT PRIMARY KEY,
   project_title VARCHAR(255) NOT NULL UNIQUE,
-  user_id INT NOT NULL
+  user_id INT NOT NULL,
+  FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
 CREATE TABLE tasks (
@@ -25,5 +26,7 @@ CREATE TABLE tasks (
   date_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   date_deadline TIMESTAMP,
   task_status BIT(1) DEFAULT 0 NOT NULL,
-  from_project INT NOT NULL
+  from_project INT NOT NULL,
+  FOREIGN KEY(task_user) REFERENCES users(id),
+  FOREIGN KEY(from_project) REFERENCES projects(id)
 );
