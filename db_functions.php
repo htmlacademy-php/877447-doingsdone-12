@@ -15,3 +15,16 @@ if (file_exists($config_file)) {
 } else {
     exit ("Файл config.php не найден");
 };
+
+// Получаем данные из БД
+// $db_connect - данные для подключения к БД
+// $sql_query - SQL-запрос
+// $sql_result_array - преобразуем результаты SQL-запроса в массив
+// return $sql_result_array - возвращаем полученный массив
+
+function sql_query_result($db_connect, $sql_query) {
+    $sql_result = mysqli_query($db_connect, $sql_query);
+    $sql_result_array = mysqli_fetch_all($sql_result, MYSQLI_ASSOC);
+
+    return $sql_result_array;
+};
