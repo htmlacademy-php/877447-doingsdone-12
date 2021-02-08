@@ -1,14 +1,15 @@
 <?php
 require_once('settings.php');
+$id = 3;
 
 // получение записей из БД
 // получение списка проектов у текущего пользователя
-$sql_projects = "SELECT id, project_title FROM projects WHERE user_id = 3";
+$sql_projects = "SELECT id, project_title FROM projects WHERE user_id = ".$id;
 $projects = sql_query_result($con, $sql_projects);
 
 
 // получение списка задач у текущего пользователя
-$sql_tasks = "SELECT * FROM tasks WHERE task_user = 3";
+$sql_tasks = "SELECT * FROM tasks WHERE task_user = ".$id;
 $tasks = sql_query_result($con, $sql_tasks);
 
 // показывать или нет выполненные задачи
