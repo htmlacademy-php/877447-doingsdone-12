@@ -9,7 +9,8 @@ $projects = sql_query_result($con, $sql_projects);
 
 
 // получение списка задач у текущего пользователя
-$sql_tasks = "SELECT * FROM tasks WHERE from_project = 3";
+$sql_tasks = "SELECT DISTINCT t.* FROM tasks t INNER JOIN projects p ON t.from_project = t.from_project
+WHERE p.user_id = ".$id;
 $tasks = sql_query_result($con, $sql_tasks);
 
 // показывать или нет выполненные задачи
