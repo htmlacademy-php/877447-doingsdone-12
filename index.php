@@ -9,7 +9,7 @@ $projects = sql_query_result($con, $sql_projects);
 
 
 // получение списка задач у текущего пользователя
-$sql_tasks = "SELECT * FROM tasks WHERE task_user = ".$id;
+$sql_tasks = "SELECT * FROM tasks WHERE from_project = 3";
 $tasks = sql_query_result($con, $sql_tasks);
 
 // показывать или нет выполненные задачи

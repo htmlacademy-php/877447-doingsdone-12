@@ -26,6 +26,5 @@ CREATE TABLE tasks (
   date_deadline TIMESTAMP,
   task_status BIT(1) DEFAULT 0 NOT NULL,
   from_project INT NOT NULL,
-  FOREIGN KEY(task_user) REFERENCES users(id),
   FOREIGN KEY(from_project) REFERENCES projects(id)
 );
