@@ -16,9 +16,29 @@ $tasks = sql_query_result($con, $sql_tasks);
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
 
+//  проверка на существования параметра запроса с идентификатором проекта. Если параметр присутствует, то показывать только те задачи, что относятся к этому проекту
+if (isset($_GET['project_id'])) {
+    $project_id = $_GET['project_id'];
+  }
+  else {
+    $project_id = '';
+  }
+
+$sql_tasks_from_project = "SELECT * FROM tasks WHERE from_project = $project_id";
+
+$result = mysqli_query($con, ($project_id) ? $sql_tasks_from_project : $sql_tasks);
+
+if($result) {
+    $all_tasks = mysqli_fetch_all($result, MYSQLI_ASSOC);
+} else {
+    $error = mysqli_error($con);
+    print ('Ошибка '. $error);
+}
+
+
 $title = 'Дела в порядке';
 $quantity_hours_in_day = 24;
 
-$main_content = include_template('main.php', ['projects' => $projects, 'tasks' => $tasks, 'show_complete_tasks' => $show_complete_tasks, 'quantity_hours_in_day' => $quantity_hours_in_day]);
+$main_content = include_template('main.php', ['projects' => $projects, 'tasks' => $tasks, 'all_tasks' => $all_tasks, 'show_complete_tasks' => $show_complete_tasks, 'quantity_hours_in_day' => $quantity_hours_in_day, 'id_project' => $id_project]);
 $layout = include_template('layout.php', ['main_content' => $main_content, 'title' => $title]);
 print ($layout);

@@ -4,8 +4,8 @@
     <nav class="main-navigation">
       <ul class="main-navigation__list">
         <?php foreach ($projects as $project) : ?>
-          <li class="main-navigation__list-item">
-            <a class="main-navigation__list-item-link" href="#"><?= htmlspecialchars($project['project_title']); ?></a>
+          <li class="main-navigation__list-item <?= ($project['id'] == $_GET['project_id']) ? 'main-navigation__list-item--active' : '' ?>">
+            <a class="main-navigation__list-item-link" href="/index.php?project_id=<?= $project['id']; ?>"><?= htmlspecialchars($project['project_title']); ?></a>
             <span class="main-navigation__list-item-count"><?= get_tasks_summ($tasks, $project['id']) ?></span>
           </li>
         <?php endforeach; ?>
@@ -42,7 +42,7 @@
 
     <table class="tasks">
       <?php
-      foreach ($tasks as $task) {
+      foreach ($all_tasks as $task) {
         if ($task['task_status'] == true && $show_complete_tasks == 0) {
           continue;
         }
