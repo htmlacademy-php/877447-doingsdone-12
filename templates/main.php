@@ -42,7 +42,7 @@
 
     <table class="tasks">
       <?php
-      foreach ($all_tasks as $task) {
+      foreach ($query_tasks as $task) {
         if ($task['task_status'] == true && $show_complete_tasks == 0) {
           continue;
         }

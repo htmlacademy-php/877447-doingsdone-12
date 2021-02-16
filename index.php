@@ -2,6 +2,9 @@
 require_once('settings.php');
 $id = 3;
 
+$title = 'Дела в порядке';
+$quantity_hours_in_day = 24;
+
 // получение записей из БД
 // получение списка проектов у текущего пользователя
 $sql_projects = "SELECT id, project_title FROM projects WHERE user_id = ".$id;
@@ -29,16 +32,22 @@ $sql_tasks_from_project = "SELECT * FROM tasks WHERE from_project = $project_id"
 $result = mysqli_query($con, ($project_id) ? $sql_tasks_from_project : $sql_tasks);
 
 if($result) {
-    $all_tasks = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $query_tasks = mysqli_fetch_all($result, MYSQLI_ASSOC);
 } else {
     $error = mysqli_error($con);
     print ('Ошибка '. $error);
 }
 
+// Если массив с задачами не пустой, показываем содержимое страницы
+// Если значение параметра запроса не существует, либо по этому id проекта не нашлось ни одной записи, то вместо содержимого страницы возвращать код ответа 404.
+if ($query_tasks) {
+    $main_content = include_template('main.php', ['projects' => $projects, 'tasks' => $tasks, 'query_tasks' =>  $query_tasks, 'show_complete_tasks' => $show_complete_tasks, 'quantity_hours_in_day' => $quantity_hours_in_day]);
+} else {
+    http_response_code(404);
+    $main_content = include_template('error.php',);
+}
 
-$title = 'Дела в порядке';
-$quantity_hours_in_day = 24;
-
-$main_content = include_template('main.php', ['projects' => $projects, 'tasks' => $tasks, 'all_tasks' => $all_tasks, 'show_complete_tasks' => $show_complete_tasks, 'quantity_hours_in_day' => $quantity_hours_in_day, 'id_project' => $id_project]);
 $layout = include_template('layout.php', ['main_content' => $main_content, 'title' => $title]);
+
+
 print ($layout);
