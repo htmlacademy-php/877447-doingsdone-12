@@ -42,13 +42,13 @@
 
     <table class="tasks">
       <?php
-      foreach ($query_tasks as $task) {
+      foreach ($tasks as $task) {
         if ($task['task_status'] == true && $show_complete_tasks == 0) {
           continue;
         }
       ?>
-        <tr class="tasks__item task <? echo ($task['task_status'] == true && $show_complete_tasks == 1) ? 'task--completed' : ''  ?>
-        <? echo ($task['task_status'] !== true && $task['date_deadline'] !== null && get_date_diff($task['date_deadline']) <= $quantity_hours_in_day) ? 'task--important' : '' ?>">
+        <tr class="tasks__item task <? echo (intval($task['task_status']) === 1 && $show_complete_tasks == 1) ? 'task--completed' : ''  ?>
+        <? echo (intval($task['task_status']) !== 1 && $task['date_deadline'] !== null && get_date_diff($task['date_deadline']) <= $quantity_hours_in_day) ? 'task--important' : '' ?>">
 
           <td class="task__select">
             <label class="checkbox task__checkbox">
