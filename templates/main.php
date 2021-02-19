@@ -4,9 +4,9 @@
     <nav class="main-navigation">
       <ul class="main-navigation__list">
         <?php foreach ($projects as $project) : ?>
-          <li class="main-navigation__list-item">
-            <a class="main-navigation__list-item-link" href="#"><?= htmlspecialchars($project['project_title']); ?></a>
-            <span class="main-navigation__list-item-count"><?= get_tasks_summ($tasks, $project['id']) ?></span>
+          <li class="main-navigation__list-item <?= ($project['id'] == $_GET['project_id']) ? 'main-navigation__list-item--active' : '' ?>">
+            <a class="main-navigation__list-item-link" href="/index.php?project_id=<?= $project['id']; ?>"><?= htmlspecialchars($project['project_title']); ?></a>
+            <span class="main-navigation__list-item-count"><?= $project['c_tasks'] ?></span>
           </li>
         <?php endforeach; ?>
       </ul>
@@ -42,13 +42,17 @@
 
     <table class="tasks">
       <?php
+      if (count($tasks) === 0) {
+        http_response_code(404);
+        print ($error_template);
+      } else {
       foreach ($tasks as $task) {
         if ($task['task_status'] == true && $show_complete_tasks == 0) {
           continue;
         }
       ?>
-        <tr class="tasks__item task <? echo ($task['task_status'] == true && $show_complete_tasks == 1) ? 'task--completed' : ''  ?>
-        <? echo ($task['task_status'] !== true && $task['date_deadline'] !== null && get_date_diff($task['date_deadline']) <= $quantity_hours_in_day) ? 'task--important' : '' ?>">
+        <tr class="tasks__item task <? echo (intval($task['task_status']) === 1 && $show_complete_tasks == 1) ? 'task--completed' : ''  ?>
+        <? echo (intval($task['task_status']) !== 1 && $task['date_deadline'] !== null && get_date_diff($task['date_deadline']) <= $quantity_hours_in_day) ? 'task--important' : '' ?>">
 
           <td class="task__select">
             <label class="checkbox task__checkbox">
@@ -62,10 +66,11 @@
           </td>
           <td class="task__date"><?= htmlspecialchars($task['date_deadline']); ?></td>
         </tr>
-      <?php } ?>
+      <?php }
+      } ?>
       <!--показывать следующий тег <tr/>, если переменная $show_complete_tasks равна единице-->
-      <?php if ($show_complete_tasks == 1) : ?>
-        <tr class="tasks__item task task--completed">
+    <?php if ($show_complete_tasks == 1) : ?>
+        <!-- <tr class="tasks__item task task--completed">
           <td class="task__select">
             <label class="checkbox task__checkbox">
               <input class="checkbox__input visually-hidden" type="checkbox" checked>
@@ -74,7 +79,7 @@
           </td>
           <td class="task__date">10.10.2019</td>
           <td class="task__controls"></td>
-        </tr>
+        </tr> -->
       <?php endif; ?>
     </table>
   </main>
