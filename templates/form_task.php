@@ -48,11 +48,9 @@
             <label class="form__label" for="project">Проект <sup>*</sup></label>
 
             <select class="form__input form__input--select" name="project" id="project">
-              <!-- <option value="">Входящие</option> -->
-              <?php foreach ($projects as $project): ?>
-
-              <option value="<?= $project['id'] ?>"><?= $project['project_title'] ?></option>
-            <?php endforeach; ?>
+              <?php foreach ($projects as $project) : ?>
+                <option value="<?= $project['id'] ?>"><?= $project['project_title'] ?></option>
+              <?php endforeach; ?>
 
             </select>
           </div>
@@ -76,7 +74,7 @@
           </div>
 
           <div class="form__row form__row--controls">
-            <input class="button" type="submit" name="" value="Добавить">
+            <input class="button" type="submit" name="submit" value="Добавить">
           </div>
         </form>
       </main>

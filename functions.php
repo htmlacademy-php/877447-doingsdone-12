@@ -18,3 +18,8 @@ function get_date_diff($date)
   $task_date = strtotime($date);
   return floor(($task_date - $cur_date) / $quantity_seconds_in_hour);
 };
+
+//  получаем значения из POST-запроса.
+function getPostVal($name) {
+    return $_POST[$name] ?? "";
+}
