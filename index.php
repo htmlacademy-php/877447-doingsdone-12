@@ -1,11 +1,11 @@
 <?php
 require_once('settings.php');
-$id = 3;
+$user_id = 3;
 
 $title = 'Дела в порядке';
 $quantity_hours_in_day = 24;
-$projects = getProjects($con, $id);
-$tasks = getTasks($con, $id);
+$projects = get_projects($con, $user_id);
+$tasks = get_tasks($con, $user_id);
 
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);

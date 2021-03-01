@@ -26,5 +26,6 @@ CREATE TABLE tasks (
   date_deadline TIMESTAMP,
   task_status BIT(1) DEFAULT 0 NOT NULL,
   from_project INT NOT NULL,
+  file VARCHAR(255),
   FOREIGN KEY(from_project) REFERENCES projects(id)
 );

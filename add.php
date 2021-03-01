@@ -1,9 +1,9 @@
 <?php
 require_once('settings.php');
 
-$id = 3;
+$user_id = 3;
 $title = 'Добавить задачу';
-$projects = getProjects($con, $id);
+$projects = get_projects($con, $user_id);
 
 
 //определяем список обязательных полей
@@ -17,6 +17,23 @@ if (isset($_POST['submit'])) {
             $errors[$field] = 'Поле не заполнено';
         }
     }
+
+    if (isset($_FILES['file'])) {
+        $file_name = $_FILES['file']['name'];
+        $file_path = __DIR__ . '/uploads/';
+        $file_url = '/uploads/' . $file_name;
+
+        move_uploaded_file($_FILES['file']['tmp_name'], $file_path . $file_name);
+
+        print("<a href='$file_url'>$file_name</a>");
+    } else {
+        $file_url = '';
+    }
+
+    if (empty($errors)) {
+        add_task($con, $_POST['name'], $_POST['project'], $_POST['date'], $file_url);
+        exit;
+      };
 }
 
 // // показать ошибку валидации
@@ -24,7 +41,7 @@ if (isset($_POST['submit'])) {
 //     print_r($errors[$field]);
 // }
 
-$main_content = include_template('form_task.php', ['projects' => $projects]);
+$main_content = include_template('form_task.php', ['projects' => $projects, 'errors' => $errors]);
 
 $layout = include_template('layout.php', ['main_content' => $main_content, 'title' => $title]);
 
