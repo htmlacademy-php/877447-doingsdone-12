@@ -41,7 +41,7 @@
           <div class="form__row">
             <label class="form__label" for="name">Название <sup>*</sup></label>
 
-            <input class="form__input <?php isset($errors['name']) ? print 'form__input--error' : print ''; ?>" type="text" name="name" id="name" value="<? htmlspecialchars(getPostVal('name')); ?>" placeholder="Введите название">
+            <input class="form__input <?php isset($errors['name']) ? print 'form__input--error' : print ''; ?>" type="text" name="name" id="name" value="<?=htmlspecialchars(getPostVal('name'));?>" placeholder="Введите название">
             <p class="form__message"><?= $errors['name'] ?></p>
           </div>
 
@@ -50,7 +50,7 @@
 
             <select class="form__input form__input--select <?php isset($errors['project']) ? print 'form__input--error' : print ''; ?>" name="project" id="project">
               <?php foreach ($projects as $project) : ?>
-                <option value="<?= $project['id'] ?>"><?= $project['project_title'] ?></option>
+                <option value="<?=$project['id'];?>"><?=$project['project_title'];?></option>
               <?php endforeach; ?>
             </select>
             <p class="form__message"><?= $errors['project'] ?></p>
@@ -59,7 +59,7 @@
           <div class="form__row">
             <label class="form__label" for="date">Дата выполнения</label>
 
-            <input class="form__input form__input--date <?php isset($errors['date']) ? print 'form__input--error' : print ''; ?>" type="text" name="date" id="date" value="<? getPostVal('date'); ?>" placeholder="Введите дату в формате ГГГГ-ММ-ДД">
+            <input class="form__input form__input--date <?php isset($errors['date']) ? print 'form__input--error' : print ''; ?>" type="text" name="date" id="date" value="<?=getPostVal('date');?>" placeholder="Введите дату в формате ГГГГ-ММ-ДД">
             <p class="form__message"><?= $errors['date'] ?></p>
           </div>
 
