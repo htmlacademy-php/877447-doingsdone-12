@@ -33,7 +33,8 @@ if (isset($_POST['submit'])) {
 // валидация поля даты
      if(isset($_POST['date'])) {
          $current_date = date('Ymd');
-         if($_POST['date'] < $current_date) {
+
+         if(strtotime($_POST['date']) < strtotime($current_date)) {
              $errors['date'] = 'Дата выполнения задачи должна быть больше или равна текущей.';
          } else {
             date_create_from_format('j-M-Y', $_POST['date']);
