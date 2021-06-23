@@ -62,7 +62,9 @@
           </td>
 
           <td class="task__file">
-            <a class="download-link" href="#">Home.psd</a>
+          <?php if (!empty($task['file'])):?>
+          <a class="download-link" href="<?=$task['file']?>"><?= substr($task['file'], 9); ?></a>
+          <?php endif; ?>
           </td>
           <td class="task__date"><?= htmlspecialchars($task['date_deadline']); ?></td>
         </tr>

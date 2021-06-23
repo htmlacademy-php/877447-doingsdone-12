@@ -704,3 +704,13 @@ a:focus {
   font-size: 18px;
   font-weight: 700;
 }
+
+.form__input-file {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+}
+
+.form__file-name {
+  margin-left: 25px;
+}

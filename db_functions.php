@@ -59,7 +59,7 @@ function add_task($con, $task_title, $from_project, $date_deadline, $file) {
         $error = mysqli_connect_error();
         print("Ошибка подключения к базе данных " . $error);
     } else {
-        $sql_add_task = "INSERT INTO tasks SET task_title = $task_title, from_project = $from_project, date_deadline = $date_deadline, file = $file";
+        $sql_add_task = "INSERT INTO tasks SET task_title = '$task_title', from_project = '$from_project', date_deadline = '$date_deadline', file = '$file'";
         $add_task  = mysqli_query($con, $sql_add_task);
         return $add_task;
     }
