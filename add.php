@@ -23,25 +23,37 @@ if (isset($_POST['submit'])) {
     if(isset($_POST['name'])) {
         $min_char = 3;
         $max_char = 50;
-        $len = mb_strlen($_POST['name'], 'utf-8');
+        isCorrectLength($_POST['name'], $min_char, $max_char);
+        // $len = mb_strlen($_POST['name'], 'utf-8');
 
-        if ($len < $min_char or $len > $max_char) {
-           $errors['name'] = "Длина поля должна быть от $min_char до $max_char символов";
-        }
+        // if ($len < $min_char or $len > $max_char) {
+        //    $errors['name'] = "Длина поля должна быть от $min_char до $max_char символов";
+        // }
     };
 
 // валидация поля даты
      if(isset($_POST['date'])) {
-         $current_date = date('Y-m-d');
+        isCorrectDate($_POST['date']);
+        //  $current_date = date('Y-m-d');
 
-         if (!(is_date_valid($_POST['date']))) {
-            $error['date'] = 'Неверный формат даты';
-        } else if(strtotime($_POST['date']) < strtotime($current_date)) {
-             $errors['date'] = 'Дата выполнения задачи должна быть больше или равна текущей.';
-         } else {
-            date_create_from_format('Y-M-j', $_POST['date']);
-         }
+        //  if (!(is_date_valid($_POST['date']))) {
+        //     $error['date'] = 'Неверный формат даты';
+        // } else if(strtotime($_POST['date']) < strtotime($current_date)) {
+        //      $errors['date'] = 'Дата выполнения задачи должна быть больше или равна текущей.';
+        //  } else {
+        //     date_create_from_format('Y-M-j', $_POST['date']);
+        //  }
      };
+
+// валидация селекта - выбора номера проекта на положительность и на целое значение
+    if(isset($_POST['project'])) {
+        $number_project = (int)$_POST['project']; // приводим к целому числу
+
+        if ($number_project <= 0) {
+            $errors['project'] = "Выберите проект из списка";
+        }
+    }
+
 
 // валидация файлового поля
     if (isset($_FILES['file']) && $_FILES['file']['error'] === 0) {
