@@ -4,58 +4,49 @@ require_once('settings.php');
 $user_id = 3;
 $title = 'Добавить задачу';
 $projects = get_projects($con, $user_id);
-
-
-//определяем список обязательных полей
-$required_fields = ['name', 'project'];
+$required_fields = ['name', 'project']; // обязательные для заполнения поля
 $errors = [];
+
+$rules = [
+    'name' => function () {
+        if (isset($_POST['name'])) {
+            $min_char = 3;
+            $max_char = 50;
+            return isCorrectLength($_POST['name'], $min_char, $max_char);
+        }
+    },
+    'project' => function () {
+        if (isset($_POST['project'])) {
+            return isCorrectNumberProject($_POST['project']);
+        }
+    },
+    'date' => function () {
+        if (isset($_POST['date'])) {
+            return isCorrectDate($_POST['date']);
+        }
+    }
+];
+
 
 if (isset($_POST['submit'])) {
 
-// валидация обязательных полей
-    foreach ($required_fields as $field) {
-        if (empty($_POST[$field])) {
-            $errors[$field] = 'Поле не заполнено';
-        }
-    };
-
-// валидация поля с названием задачи на количество символов
-    if(isset($_POST['name'])) {
-        $min_char = 3;
-        $max_char = 50;
-        isCorrectLength($_POST['name'], $min_char, $max_char);
-        // $len = mb_strlen($_POST['name'], 'utf-8');
-
-        // if ($len < $min_char or $len > $max_char) {
-        //    $errors['name'] = "Длина поля должна быть от $min_char до $max_char символов";
-        // }
-    };
-
-// валидация поля даты
-     if(isset($_POST['date'])) {
-        isCorrectDate($_POST['date']);
-        //  $current_date = date('Y-m-d');
-
-        //  if (!(is_date_valid($_POST['date']))) {
-        //     $error['date'] = 'Неверный формат даты';
-        // } else if(strtotime($_POST['date']) < strtotime($current_date)) {
-        //      $errors['date'] = 'Дата выполнения задачи должна быть больше или равна текущей.';
-        //  } else {
-        //     date_create_from_format('Y-M-j', $_POST['date']);
-        //  }
-     };
-
-// валидация селекта - выбора номера проекта на положительность и на целое значение
-    if(isset($_POST['project'])) {
-        $number_project = (int)$_POST['project']; // приводим к целому числу
-
-        if ($number_project <= 0) {
-            $errors['project'] = "Выберите проект из списка";
+    foreach ($_POST as $key => $value) {
+        if (isset($rules[$key])) {
+            $rule = $rules[$key];
+            $errors[$key] = $rule();
         }
     }
 
+    $errors = array_filter($errors);
 
-// валидация файлового поля
+    // // валидация обязательных полей
+    // foreach ($required_fields as $field) {
+    //     if (empty($_POST[$field])) {
+    //         $errors[$field] = 'Поле не заполнено';
+    //     }
+    // };
+
+    // валидация файлового поля
     if (isset($_FILES['file']) && $_FILES['file']['error'] === 0) {
         $file_name = $_FILES['file']['name'];
         $file_path = __DIR__ . '/uploads/';
@@ -66,11 +57,12 @@ if (isset($_POST['submit'])) {
         $file_url = '';
     };
 
+
     if (empty($errors)) {
         add_task($con, $_POST['name'], $_POST['project'], $_POST['date'], $file_url);
         header('Location: index.php');
         exit;
-      };
+    };
 };
 
 $main_content = include_template('form_task.php', ['projects' => $projects, 'errors' => $errors]);
