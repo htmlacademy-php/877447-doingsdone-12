@@ -1,4 +1,6 @@
 <?php
+require_once('helpers.php');
+
 function get_tasks_summ($array, $title)
 {
     $summ_tasks = 0;
@@ -51,7 +53,7 @@ function isCorrectNumberProject($project)
     $number_project = (int)$project; // приводим к целому числу
 
     if ($number_project <= 0) {
-       return "Выберите проект из списка";
+        return "Выберите проект из списка";
     }
 }
 
@@ -60,7 +62,9 @@ function isCorrectDate($date)
 {
     $current_date = date('Y-m-d');
 
-    if (!(is_date_valid($date))) {
+    if (empty($date)) {
+        return '';
+    } else if (!(is_date_valid($date))) {
         return 'Неверный формат даты';
     } else if (strtotime($date) < strtotime($current_date)) {
         return 'Дата выполнения задачи должна быть больше или равна текущей.';
@@ -68,4 +72,3 @@ function isCorrectDate($date)
         return date_create_from_format('Y-M-j', $date);
     }
 }
-

@@ -27,9 +27,17 @@ $rules = [
     }
 ];
 
-
 if (isset($_POST['submit'])) {
 
+    //    // валидация обязательных полей
+    //     foreach ($required_fields as $_POST[$field]) {
+    //         if (empty($_POST[$field])) {
+    //             $errors[$field] = 'Поле не заполнено';
+    //         }
+    //     };
+
+
+    //применяем функции валидации полей формы к каждому элементу формы внутри цикла
     foreach ($_POST as $key => $value) {
         if (isset($rules[$key])) {
             $rule = $rules[$key];
@@ -39,12 +47,6 @@ if (isset($_POST['submit'])) {
 
     $errors = array_filter($errors);
 
-    // // валидация обязательных полей
-    // foreach ($required_fields as $field) {
-    //     if (empty($_POST[$field])) {
-    //         $errors[$field] = 'Поле не заполнено';
-    //     }
-    // };
 
     // валидация файлового поля
     if (isset($_FILES['file']) && $_FILES['file']['error'] === 0) {

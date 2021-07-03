@@ -46,7 +46,7 @@ function get_tasks($con, $user_id) {
         }
         else {
         // получение полного списка задач у текущего пользователя
-          $sql_tasks = "SELECT DISTINCT t.* FROM tasks t INNER JOIN projects p ON t.from_project = t.from_project WHERE p.user_id = ".$user_id;
+          $sql_tasks = "SELECT DISTINCT t.* FROM tasks t INNER JOIN projects p ON t.from_project = t.from_project WHERE p.user_id = ".$user_id." ORDER BY t.date_add DESC";
         }
 
       $tasks = sql_query_result($con, $sql_tasks);
