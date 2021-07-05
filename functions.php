@@ -28,32 +28,38 @@ function getPostVal($name)
 }
 
 // проверка, является ли поле обязательным для заполнения
-function isRequiredField($arr_fields)
+function isRequiredField($field)
 {
-    foreach ($arr_fields as $field) {
-        if (empty($_POST[$field])) {
-            return 'Поле не заполнено';
-        }
+    if (empty($_POST[$field])) {
+        return 'Поле не заполнено';
     };
 }
 
 // Проверка длины поля
 function isCorrectLength($name, $min, $max)
 {
-    $len = mb_strlen($name, 'utf-8');
+    if (empty($name)) {
+        return isRequiredField($name);
+    } else {
+        $len = mb_strlen($name, 'utf-8');
 
-    if ($len < $min or $len > $max) {
-        return "Длина поля должна быть от $min до $max символов";
+        if ($len < $min or $len > $max) {
+            return "Длина поля должна быть от $min до $max символов";
+        }
     }
 }
 
 // валидация селекта - выбора номера проекта на положительность и на целое значение
 function isCorrectNumberProject($project)
 {
-    $number_project = (int)$project; // приводим к целому числу
+    if (empty($project)) {
+        return isRequiredField($project);
+    } else {
+        $number_project = (int)$project; // приводим к целому числу
 
-    if ($number_project <= 0) {
-        return "Выберите проект из списка";
+        if ($number_project <= 0) {
+            return "Выберите проект из списка";
+        }
     }
 }
 
