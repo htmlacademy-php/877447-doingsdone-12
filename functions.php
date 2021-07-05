@@ -1,6 +1,14 @@
 <?php
 require_once('helpers.php');
 
+/**
+ * Подсчитывает количество задач в одном проекте
+ * *
+ * @param $array массив задач
+ * @param $title Название проекта
+ *
+ * @return number Возвращает количество задач в одном проекте
+ */
 function get_tasks_summ($array, $title)
 {
     $summ_tasks = 0;
@@ -12,6 +20,14 @@ function get_tasks_summ($array, $title)
     return $summ_tasks;
 };
 
+/**
+ * Вычисляем разницу между датами
+ * *
+ * @param $cur_date Текущая дата
+ * @param $task_date Дата дедлайна
+ *
+ * @return number ВВозвращает разницу между датами
+ */
 function get_date_diff($date)
 {
     $cur_date = time();
@@ -21,13 +37,19 @@ function get_date_diff($date)
     return floor(($task_date - $cur_date) / $quantity_seconds_in_hour);
 };
 
-//  получаем значения из POST-запроса.
+/**
+ * Получаем значения из POST-запроса
+ */
 function getPostVal($name)
 {
     return $_POST[$name] ?? "";
 }
 
-// проверка, является ли поле обязательным для заполнения
+/**
+ * Проверка, является ли поле обязательным для заполнения
+ * *
+ * @return string Если обязательное поле не заполнено, возвращает сообщение об ошибке
+ */
 function isRequiredField($field)
 {
     if (empty($_POST[$field])) {
@@ -35,7 +57,13 @@ function isRequiredField($field)
     };
 }
 
-// Проверка длины поля
+/**
+ * Проверка длины поля
+ * @param $min Минимальное количество символов
+ * @param $max Максимальное количество символов
+ *
+ * @return string Проверяет поле на пустоту или на допустимую длину, в случае несоответствия возвращает сообщение об ошибке
+ */
 function isCorrectLength($name, $min, $max)
 {
     if (empty($name)) {
@@ -49,7 +77,11 @@ function isCorrectLength($name, $min, $max)
     }
 }
 
-// валидация селекта - выбора номера проекта на положительность и на целое значение
+/**
+ * Валидация селекта - выбора номера проекта -  на положительность и на целое значение
+ *
+ * @return string Проверяет корректность выбранного номера проекта, в случае некорректного - возвращает сообщение об ошибке
+ */
 function isCorrectNumberProject($project)
 {
     if (empty($project)) {
@@ -63,7 +95,13 @@ function isCorrectNumberProject($project)
     }
 }
 
-// валидация поля даты
+/**
+ * Валидация поля выбора даты
+ *
+ * @param $current_date Текущая дата *
+ *
+ * @return string Проверяет корректность выбранной даты, в случае некорректной - возвращает сообщение об ошибке
+ */
 function isCorrectDate($date)
 {
     $current_date = date('Y-m-d');

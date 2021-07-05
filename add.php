@@ -10,9 +10,7 @@ $errors = [];
 $rules = [
     'name' => function () {
         if (isset($_POST['name'])) {
-            $min_char = 3;
-            $max_char = 50;
-            return isCorrectLength($_POST['name'], $min_char, $max_char);
+            return isCorrectLength($_POST['name'], 3, 50);
         }
     },
     'project' => function () {
@@ -28,14 +26,6 @@ $rules = [
 ];
 
 if (isset($_POST['submit'])) {
-
-    //    // валидация обязательных полей
-    //     foreach ($required_fields as $_POST[$field]) {
-    //         if (empty($_POST[$field])) {
-    //             $errors[$field] = 'Поле не заполнено';
-    //         }
-    //     };
-
 
     //применяем функции валидации полей формы к каждому элементу формы внутри цикла
     foreach ($_POST as $key => $value) {
