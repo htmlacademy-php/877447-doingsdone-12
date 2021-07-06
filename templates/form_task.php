@@ -78,6 +78,7 @@
               <p class="form__file-name">
               <?= isset($_FILES['file']) ? ($_FILES['file']['name']) : '';  ?>
               </p>
+              <p class="form__message"><?= $errors['file'] ?></p>
 
             </div>
           </div>

@@ -26,6 +26,9 @@ $rules = [
 ];
 
 if (isset($_POST['submit'])) {
+    // если размер файла превышает допустимый, добавляем сообщение об ошибке в общий массив errors
+    $file_error = isCorrectFileSize($_FILES);
+    $errors['file'] = $file_error;
 
     //применяем функции валидации полей формы к каждому элементу формы внутри цикла
     foreach ($_POST as $key => $value) {
@@ -39,22 +42,24 @@ if (isset($_POST['submit'])) {
 
 
     // валидация файлового поля
-    if (isset($_FILES['file']) && $_FILES['file']['error'] === 0) {
-        $file_name = $_FILES['file']['name'];
-        $file_path = __DIR__ . '/uploads/';
-        $file_url = '/uploads/' . $file_name;
+    if (isset($_FILES['file'])) {
 
-        move_uploaded_file($_FILES['file']['tmp_name'], $file_path . $file_name);
-    } else {
-        $file_url = '';
-    };
+        if ($errors['file'] === 0) {
+            $file_name = $_FILES['file']['name'];
+            $file_path = __DIR__ . '/uploads/';
+            $file_url = '/uploads/' . $file_name;
 
+            move_uploaded_file($_FILES['file']['tmp_name'], $file_path . $file_name);
+        } else {
+            $file_url = '';
+        }
+    }
 
     if (empty($errors)) {
         add_task($con, $_POST['name'], $_POST['project'], $_POST['date'], $file_url);
         header('Location: index.php');
         exit;
-    };
+    }
 };
 
 $main_content = include_template('form_task.php', ['projects' => $projects, 'errors' => $errors]);

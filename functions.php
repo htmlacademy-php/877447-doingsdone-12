@@ -98,7 +98,7 @@ function isCorrectNumberProject($project)
 /**
  * Валидация поля выбора даты
  *
- * @param $current_date Текущая дата *
+ * @param $current_date Текущая дата
  *
  * @return string Проверяет корректность выбранной даты, в случае некорректной - возвращает сообщение об ошибке
  */
@@ -114,5 +114,15 @@ function isCorrectDate($date)
         return 'Дата выполнения задачи должна быть больше или равна текущей.';
     } else {
         return date_create_from_format('Y-M-j', $date);
+    }
+}
+
+// проверка размера файла
+function isCorrectFileSize($arr)
+{
+    $file_size = $arr['file']['size'];
+
+    if ($file_size > 5000000) {
+         return "Максимальный размер файла - 5Мб";
     }
 }
