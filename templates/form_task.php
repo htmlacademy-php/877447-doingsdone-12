@@ -71,7 +71,7 @@
             <div class="form__input-file">
               <input class="visually-hidden" type="file" name="file" id="file" value="<?= isset($_POST['file']) ? ($_POST['file']) : '';  ?>">
 
-              <label class="button button--transparent" for="file">
+              <label class="button button--transparent <?php isset($errors['file']) ? print 'form__input--error' : print ''; ?>" for="file">
                 <span>Выберите файл</span>
               </label>
 
