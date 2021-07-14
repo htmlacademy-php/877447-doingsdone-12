@@ -20,17 +20,17 @@ INSERT INTO projects SET project_title = 'Авто', user_id = (SELECT u.id FROM
 
 -- заполняем данными таблицу tasks
 
-INSERT INTO tasks SET task_title = 'Собеседование в IT компании', date_add = '2021-01-20', date_deadline = '2021-03-15', task_status = false, from_project = (SELECT p.id FROM projects p WHERE p.project_title = "Работа");
+INSERT INTO tasks SET task_title = 'Собеседование в IT компании', user_id = (SELECT u.id FROM users u WHERE u.user_name = "kostya"), date_add = '2021-01-20', date_deadline = '2021-03-15', task_status = false, from_project = (SELECT p.id FROM projects p WHERE p.project_title = "Работа");
 
-INSERT INTO tasks SET task_title = 'Выполнить тестовое задание', date_add = '2021-01-10', date_deadline = '2021-02-20', task_status = false, from_project = (SELECT p.id FROM projects p WHERE p.project_title = "Работа");
+INSERT INTO tasks SET task_title = 'Выполнить тестовое задание', user_id = (SELECT u.id FROM users u WHERE u.user_name = "kostya"), date_add = '2021-01-10', date_deadline = '2021-02-20', task_status = false, from_project = (SELECT p.id FROM projects p WHERE p.project_title = "Работа");
 
-INSERT INTO tasks SET task_title = 'Сделать задание первого раздела', date_add = '2020-12-10', date_deadline = '2020-12-21', task_status = true, from_project = (SELECT p.id FROM projects p WHERE p.project_title = "Учеба");
+INSERT INTO tasks SET task_title = 'Сделать задание первого раздела', user_id = (SELECT u.id FROM users u WHERE u.user_name = "kostya"), date_add = '2020-12-10', date_deadline = '2020-12-21', task_status = true, from_project = (SELECT p.id FROM projects p WHERE p.project_title = "Учеба");
 
-INSERT INTO tasks SET task_title = 'Встреча с другом', date_add = '2021-01-10', date_deadline = '2021-01-22', task_status = false, from_project = (SELECT p.id FROM projects p WHERE p.project_title = "Входящие");
+INSERT INTO tasks SET task_title = 'Встреча с другом', user_id = (SELECT u.id FROM users u WHERE u.user_name = "kostya"), date_add = '2021-01-10', date_deadline = '2021-01-22', task_status = false, from_project = (SELECT p.id FROM projects p WHERE p.project_title = "Входящие");
 
-INSERT INTO tasks SET task_title = 'Купить корм для кота', date_add = null, date_deadline = null, task_status = false, from_project = (SELECT p.id FROM projects p WHERE p.project_title = "Домашние дела");
+INSERT INTO tasks SET task_title = 'Купить корм для кота', user_id = (SELECT u.id FROM users u WHERE u.user_name = "kostya"), date_add = null, date_deadline = null, task_status = false, from_project = (SELECT p.id FROM projects p WHERE p.project_title = "Домашние дела");
 
-INSERT INTO tasks SET task_title = 'Заказать пиццу', date_add = null, date_deadline = null, task_status = false, from_project = (SELECT p.id FROM projects p WHERE p.project_title = "Домашние дела");
+INSERT INTO tasks SET task_title = 'Заказать пиццу', user_id = (SELECT u.id FROM users u WHERE u.user_name = "kostya"), date_add = null, date_deadline = null, task_status = false, from_project = (SELECT p.id FROM projects p WHERE p.project_title = "Домашние дела");
 
 
  -- получить список из всех проектов для одного пользователя;
