@@ -52,7 +52,7 @@ function getPostVal($name)
  */
 function isRequiredField($field)
 {
-    if (empty($_POST[$field])) {
+    if (empty($field)) {
         return 'Поле не заполнено';
     };
 }
@@ -66,14 +66,10 @@ function isRequiredField($field)
  */
 function isCorrectLength($name, $min, $max)
 {
-    if (empty($name)) {
-        return isRequiredField($name);
-    } else {
-        $len = mb_strlen($name, 'utf-8');
-
-        if ($len < $min or $len > $max) {
-            return "Длина поля должна быть от $min до $max символов";
-        }
+    isRequiredField($name);
+    $len = mb_strlen($name, 'utf-8');
+    if ($len < $min or $len > $max) {
+        return "Длина поля должна быть от $min до $max символов";
     }
 }
 
@@ -84,14 +80,10 @@ function isCorrectLength($name, $min, $max)
  */
 function isCorrectNumberProject($project)
 {
-    if (empty($project)) {
-        return isRequiredField($project);
-    } else {
-        $number_project = (int)$project; // приводим к целому числу
-
-        if ($number_project <= 0) {
-            return "Выберите проект из списка";
-        }
+    isRequiredField($project);
+    $number_project = (int)$project; // приводим к целому числу
+    if ($number_project <= 0) {
+        return "Выберите проект из списка";
     }
 }
 
@@ -106,14 +98,18 @@ function isCorrectDate($date)
 {
     $current_date = date('Y-m-d');
 
-    if (empty($date)) {
-        return '';
-    } else if (!(is_date_valid($date))) {
-        return 'Неверный формат даты';
-    } else if (strtotime($date) < strtotime($current_date)) {
-        return 'Дата выполнения задачи должна быть больше или равна текущей.';
+    // isRequiredField($date);
+
+    if (!empty($date)) {
+        if (!(is_date_valid($date))) {
+            return 'Неверный формат даты';
+        } else if (strtotime($date) < strtotime($current_date)) {
+            return 'Дата выполнения задачи должна быть больше или равна текущей.';
+        } else {
+            return date_create_from_format('Y-M-j', $date);
+        }
     } else {
-        return date_create_from_format('Y-M-j', $date);
+        return '';
     }
 }
 
@@ -123,6 +119,6 @@ function isCorrectFileSize($arr)
     $file_size = $arr['file']['size'];
 
     if ($file_size > 5000000) {
-         return "Максимальный размер файла - 5Мб";
+        return "Максимальный размер файла - 5Мб";
     }
 }
