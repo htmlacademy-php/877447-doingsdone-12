@@ -66,10 +66,13 @@ function isRequiredField($field)
  */
 function isCorrectLength($name, $min, $max)
 {
-    isRequiredField($name);
-    $len = mb_strlen($name, 'utf-8');
-    if ($len < $min or $len > $max) {
-        return "Длина поля должна быть от $min до $max символов";
+    if (empty($name)) {
+        return isRequiredField($name);
+    } else {
+        $len = mb_strlen($name, 'utf-8');
+        if ($len < $min or $len > $max) {
+            return "Длина поля должна быть от $min до $max символов";
+        }
     }
 }
 
@@ -80,10 +83,13 @@ function isCorrectLength($name, $min, $max)
  */
 function isCorrectNumberProject($project)
 {
-    isRequiredField($project);
-    $number_project = (int)$project; // приводим к целому числу
-    if ($number_project <= 0) {
-        return "Выберите проект из списка";
+    if (empty($project)) {
+        return isRequiredField($project);
+    } else {
+        $number_project = (int)$project; // приводим к целому числу
+        if ($number_project <= 0) {
+            return "Выберите проект из списка";
+        }
     }
 }
 
