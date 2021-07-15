@@ -98,18 +98,12 @@ function isCorrectDate($date)
 {
     $current_date = date('Y-m-d');
 
-    // isRequiredField($date);
-
     if (!empty($date)) {
         if (!(is_date_valid($date))) {
             return 'Неверный формат даты';
         } else if (strtotime($date) < strtotime($current_date)) {
             return 'Дата выполнения задачи должна быть больше или равна текущей.';
-        } else {
-            return date_create_from_format('Y-M-j', $date);
         }
-    } else {
-        return '';
     }
 }
 
