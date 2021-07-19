@@ -11,13 +11,13 @@ require_once('helpers.php');
  */
 function get_tasks_summ($array, $title)
 {
-    $summ_tasks = 0;
-    foreach ($array as $item) {
-        if ($item['from_project'] == $title) {
-            $summ_tasks++;
-        }
+  $summ_tasks = 0;
+  foreach ($array as $item) {
+    if ($item['from_project'] == $title) {
+      $summ_tasks++;
     }
-    return $summ_tasks;
+  }
+  return $summ_tasks;
 };
 
 /**
@@ -30,11 +30,11 @@ function get_tasks_summ($array, $title)
  */
 function get_date_diff($date)
 {
-    $cur_date = time();
-    $quantity_seconds_in_hour = 3600;
+  $cur_date = time();
+  $quantity_seconds_in_hour = 3600;
 
-    $task_date = strtotime($date);
-    return floor(($task_date - $cur_date) / $quantity_seconds_in_hour);
+  $task_date = strtotime($date);
+  return floor(($task_date - $cur_date) / $quantity_seconds_in_hour);
 };
 
 /**
@@ -42,7 +42,7 @@ function get_date_diff($date)
  */
 function getPostVal($name)
 {
-    return $_POST[$name] ?? "";
+  return $_POST[$name] ?? "";
 }
 
 /**
@@ -52,9 +52,9 @@ function getPostVal($name)
  */
 function isRequiredField($field)
 {
-    if (empty($field)) {
-        return 'Поле не заполнено';
-    };
+  if (empty($field)) {
+    return "Поле не заполнено";
+  };
 }
 
 /**
@@ -66,15 +66,17 @@ function isRequiredField($field)
  */
 function isCorrectLength($name, $min, $max)
 {
-    if (empty($name)) {
-        return isRequiredField($name);
-    } else {
-        $len = mb_strlen($name, 'utf-8');
-        if ($len < $min or $len > $max) {
-            return "Длина поля должна быть от $min до $max символов";
-        }
+  $result = isRequiredField($name);
+
+  if (empty($result)) {
+    $len = mb_strlen($name, 'utf-8');
+    if ($len < $min or $len > $max) {
+      $result = "Длина поля должна быть от $min до $max символов";
     }
+  }
+  return $result;
 }
+
 
 /**
  * Валидация селекта - выбора номера проекта -  на положительность и на целое значение
@@ -83,14 +85,14 @@ function isCorrectLength($name, $min, $max)
  */
 function isCorrectNumberProject($project)
 {
-    if (empty($project)) {
-        return isRequiredField($project);
-    } else {
-        $number_project = (int)$project; // приводим к целому числу
-        if ($number_project <= 0) {
-            return "Выберите проект из списка";
-        }
+  if (empty($project)) {
+    return isRequiredField($project);
+  } else {
+    $number_project = (int)$project; // приводим к целому числу
+    if ($number_project <= 0) {
+      return "Выберите проект из списка";
     }
+  }
 }
 
 /**
@@ -102,23 +104,23 @@ function isCorrectNumberProject($project)
  */
 function isCorrectDate($date)
 {
-    $current_date = date('Y-m-d');
+  $current_date = date('Y-m-d');
 
-    if (!empty($date)) {
-        if (!(is_date_valid($date))) {
-            return 'Неверный формат даты';
-        } else if (strtotime($date) < strtotime($current_date)) {
-            return 'Дата выполнения задачи должна быть больше или равна текущей.';
-        }
+  if (!empty($date)) {
+    if (!(is_date_valid($date))) {
+      return "Неверный формат даты";
+    } else if (strtotime($date) < strtotime($current_date)) {
+      return "Дата выполнения задачи должна быть больше или равна текущей.";
     }
+  }
 }
 
 // проверка размера файла
 function isCorrectFileSize($arr)
 {
-    $file_size = $arr['file']['size'];
+  $file_size = $arr['file']['size'];
 
-    if ($file_size > 5000000) {
-        return "Максимальный размер файла - 5Мб";
-    }
+  if ($file_size > 5000000) {
+    return "Максимальный размер файла - 5Мб";
+  }
 }
