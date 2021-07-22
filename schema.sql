@@ -22,9 +22,11 @@ CREATE TABLE projects (
 CREATE TABLE tasks (
   id INT AUTO_INCREMENT PRIMARY KEY,
   task_title VARCHAR(255) NOT NULL UNIQUE,
+  user_id INT NOT NULL,
   date_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   date_deadline TIMESTAMP,
   task_status BIT(1) DEFAULT 0 NOT NULL,
   from_project INT NOT NULL,
+  file VARCHAR(255),
   FOREIGN KEY(from_project) REFERENCES projects(id)
 );

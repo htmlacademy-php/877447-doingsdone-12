@@ -28,3 +28,42 @@ function sql_query_result($db_connect, $sql_query) {
 
     return $sql_result_array;
 };
+
+// получение записей из БД
+// получение списка проектов у текущего пользователя
+function get_projects($con, $user_id) {
+    $projects = [];
+    $sql_projects = "SELECT id, project_title, (SELECT COUNT(t.id) FROM tasks t WHERE t.from_project = p.id) AS c_tasks FROM projects p WHERE p.user_id = ".$user_id;
+    $projects = sql_query_result($con, $sql_projects);
+    return $projects;
+};
+
+//  проверка на существование параметра запроса с идентификатором проекта. Если параметр присутствует, то показывать только те задачи, что относятся к этому проекту
+function get_tasks($con, $user_id) {
+    $tasks = [];
+    if (isset($_GET['project_id'])) {
+        $sql_tasks = "SELECT * FROM tasks WHERE from_project = ".$_GET['project_id'];
+        }
+        else {
+        // получение полного списка задач у текущего пользователя
+          $sql_tasks = "SELECT DISTINCT t.* FROM tasks t INNER JOIN projects p ON t.from_project = t.from_project WHERE p.user_id = ".$user_id." ORDER BY t.date_add DESC";
+        }
+
+      $tasks = sql_query_result($con, $sql_tasks);
+      return $tasks;
+};
+
+// добавление новой задачи
+function add_task($con, $task_title, $from_project, $date_deadline, $file) {
+    if(!$con) {
+        $error = mysqli_connect_error();
+        print("Ошибка подключения к базе данных " . $error);
+    } else {
+        $str_deadline = "";
+        if(!empty($date_deadline)) $str_deadline = "date_deadline = '".$date_deadline."', ";
+
+        $sql_add_task = "INSERT INTO tasks SET task_title = '$task_title', user_id = 3, from_project = '$from_project', ".$str_deadline." file = '$file'";
+        $add_task  = mysqli_query($con, $sql_add_task);
+        return $add_task;
+    }
+}
