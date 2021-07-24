@@ -111,7 +111,7 @@ function isCorrectDate($date)
         if (!(is_date_valid($date))) {
             return "Неверный формат даты";
         } else if (strtotime($date) < strtotime($current_date)) {
-            return "Дата выполнения задачи должна быть больше или равна текущей.";
+            return "Дата выполнения задачи должна быть больше или равна текущей";
         }
     }
 }
@@ -124,4 +124,32 @@ function isCorrectFileSize($arr)
     if ($file_size > 5000000) {
         return "Максимальный размер файла - 5Мб";
     }
+}
+
+/**
+ * Проверка email, который ввел пользователь
+ * @param $email
+ *
+ * @return string Проверяет корректность веденного email, в случае несоответствия возвращает сообщение об ошибке
+ */
+function isCorrectEmail($email)
+{
+    $result = isRequiredField($email);
+
+    if (empty($result)) {
+        $result = filter_var($email, FILTER_VALIDATE_EMAIL);
+    }
+    return $result;
+}
+
+/**
+ * Проверка password, который ввел пользователь
+ * @param $password
+ *
+ * @return string Проверяет корректность веденного пароля, в случае несоответствия возвращает сообщение об ошибке
+ */
+function isCorrectPassword($password)
+{
+    $result = isRequiredField($password);
+    return $result;
 }

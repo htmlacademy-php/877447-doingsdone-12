@@ -67,3 +67,15 @@ function add_task($con, $task_title, $from_project, $date_deadline, $file) {
         return $add_task;
     }
 }
+
+// добавление нового пользователя
+function add_user($con, $email, $password, $user_name) {
+    if(!$con) {
+        $error = mysqli_connect_error();
+        print("Ошибка подключения к базе данных " . $error);
+    } else {
+        $sql_add_user = "INSERT INTO users SET user_name = '$user_name', user_email = '$email', user_password = '$password'";
+        $add_user  = mysqli_query($con, $sql_add_user);
+        return $add_user;
+    }
+}
