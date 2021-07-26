@@ -74,6 +74,8 @@ function add_user($con, $user_name, $email, $password) {
         $error = mysqli_connect_error();
         print("Ошибка подключения к базе данных " . $error);
     } else {
+        $password = password_hash($password, PASSWORD_DEFAULT);
+
         $sql_add_user = "INSERT INTO users SET user_name = '$user_name', user_email = '$email', user_password = '$password'";
         $add_user  = mysqli_query($con, $sql_add_user);
         return $add_user;

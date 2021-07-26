@@ -19,7 +19,7 @@ $registration_rules = [
     },
     'name' => function () {
         if (isset($_POST['name'])) {
-            return isCorrectLength($_POST['name'], 3, 50);
+            return isCorrectLength($_POST['name'], 3, 25);
         }
     }
 ];
@@ -39,7 +39,7 @@ if (isset($_POST['submit'])) {
 
     if (empty($errors)) {
 
-        add_user($con, $_POST['email'], $_POST['password'], $_POST['name']);
+        add_user($con, $_POST['name'], $_POST['email'], $_POST['password']);
         header('Location: index.php');
         exit;
     }
