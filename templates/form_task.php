@@ -87,7 +87,7 @@
             <input class="button" type="submit" name="submit" value="Добавить">
           </div>
         </form>
-        <p class="form__message"><?php !empty($errors) ? print 'Пожалуйста, исправьте ошибки в форме' : ''; ?> </p>
+        <p class="error-message"><?php !empty($errors) ? print 'Пожалуйста, исправьте ошибки в форме' : ''; ?></p>
       </main>
     </div>
   </div>

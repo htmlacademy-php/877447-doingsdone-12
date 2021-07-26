@@ -151,5 +151,9 @@ function isCorrectEmail($email)
 function isCorrectPassword($password)
 {
     $result = isRequiredField($password);
+
+    // if(empty($result)) {
+    //     $result = password_hash($password, PASSWORD_DEFAULT);
+    // }
     return $result;
 }

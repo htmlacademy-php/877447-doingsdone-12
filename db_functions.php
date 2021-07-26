@@ -69,7 +69,7 @@ function add_task($con, $task_title, $from_project, $date_deadline, $file) {
 }
 
 // добавление нового пользователя
-function add_user($con, $email, $password, $user_name) {
+function add_user($con, $user_name, $email, $password) {
     if(!$con) {
         $error = mysqli_connect_error();
         print("Ошибка подключения к базе данных " . $error);

@@ -19,7 +19,7 @@ $registration_rules = [
     },
     'name' => function () {
         if (isset($_POST['name'])) {
-            return isCorrectLength($_POST['name'], 3, 25);
+            return isCorrectLength($_POST['name'], 3, 50);
         }
     }
 ];
