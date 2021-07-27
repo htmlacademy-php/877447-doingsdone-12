@@ -137,7 +137,9 @@ function isCorrectEmail($email)
   $result = isRequiredField($email);
 
   if (empty($result)) {
-    $result = filter_var($email, FILTER_VALIDATE_EMAIL);
+    if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $result = "Некорректный email";
+    }
   }
   return $result;
 }
