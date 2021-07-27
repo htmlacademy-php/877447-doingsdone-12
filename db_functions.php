@@ -5,7 +5,8 @@ $config_file = 'config.php';
 if (file_exists($config_file)) {
     require_once($config_file);
 
-    function db_connect($db_config) {
+    function db_connect($db_config)
+    {
         // подключение к серверу
         $con = mysqli_connect($db_config['db_host'], $db_config['db_username'], $db_config['db_password'], $db_config['db_name']);
         mysqli_set_charset($con, "utf-8");
@@ -13,7 +14,7 @@ if (file_exists($config_file)) {
         return $con;
     };
 } else {
-    exit ("Файл config.php не найден");
+    exit("Файл config.php не найден");
 };
 
 // Получаем данные из БД
@@ -22,7 +23,8 @@ if (file_exists($config_file)) {
 // $sql_result_array - преобразуем результаты SQL-запроса в массив
 // return $sql_result_array - возвращаем полученный массив
 
-function sql_query_result($db_connect, $sql_query) {
+function sql_query_result($db_connect, $sql_query)
+{
     $sql_result = mysqli_query($db_connect, $sql_query);
     $sql_result_array = mysqli_fetch_all($sql_result, MYSQLI_ASSOC);
 
@@ -31,46 +33,49 @@ function sql_query_result($db_connect, $sql_query) {
 
 // получение записей из БД
 // получение списка проектов у текущего пользователя
-function get_projects($con, $user_id) {
+function get_projects($con, $user_id)
+{
     $projects = [];
-    $sql_projects = "SELECT id, project_title, (SELECT COUNT(t.id) FROM tasks t WHERE t.from_project = p.id) AS c_tasks FROM projects p WHERE p.user_id = ".$user_id;
+    $sql_projects = "SELECT id, project_title, (SELECT COUNT(t.id) FROM tasks t WHERE t.from_project = p.id) AS c_tasks FROM projects p WHERE p.user_id = " . $user_id;
     $projects = sql_query_result($con, $sql_projects);
     return $projects;
 };
 
 //  проверка на существование параметра запроса с идентификатором проекта. Если параметр присутствует, то показывать только те задачи, что относятся к этому проекту
-function get_tasks($con, $user_id) {
+function get_tasks($con, $user_id)
+{
     $tasks = [];
     if (isset($_GET['project_id'])) {
-        $sql_tasks = "SELECT * FROM tasks WHERE from_project = ".$_GET['project_id'];
-        }
-        else {
+        $sql_tasks = "SELECT * FROM tasks WHERE from_project = " . $_GET['project_id'];
+    } else {
         // получение полного списка задач у текущего пользователя
-          $sql_tasks = "SELECT DISTINCT t.* FROM tasks t INNER JOIN projects p ON t.from_project = t.from_project WHERE p.user_id = ".$user_id." ORDER BY t.date_add DESC";
-        }
+        $sql_tasks = "SELECT DISTINCT t.* FROM tasks t INNER JOIN projects p ON t.from_project = t.from_project WHERE p.user_id = " . $user_id . " ORDER BY t.date_add DESC";
+    }
 
-      $tasks = sql_query_result($con, $sql_tasks);
-      return $tasks;
+    $tasks = sql_query_result($con, $sql_tasks);
+    return $tasks;
 };
 
 // добавление новой задачи
-function add_task($con, $task_title, $from_project, $date_deadline, $file) {
-    if(!$con) {
+function add_task($con, $task_title, $from_project, $date_deadline, $file)
+{
+    if (!$con) {
         $error = mysqli_connect_error();
         print("Ошибка подключения к базе данных " . $error);
     } else {
         $str_deadline = "";
-        if(!empty($date_deadline)) $str_deadline = "date_deadline = '".$date_deadline."', ";
+        if (!empty($date_deadline)) $str_deadline = "date_deadline = '" . $date_deadline . "', ";
 
-        $sql_add_task = "INSERT INTO tasks SET task_title = '$task_title', user_id = 3, from_project = '$from_project', ".$str_deadline." file = '$file'";
+        $sql_add_task = "INSERT INTO tasks SET task_title = '$task_title', user_id = 3, from_project = '$from_project', " . $str_deadline . " file = '$file'";
         $add_task  = mysqli_query($con, $sql_add_task);
         return $add_task;
     }
 }
 
 // добавление нового пользователя
-function add_user($con, $user_name, $email, $password) {
-    if(!$con) {
+function add_user($con, $user_name, $email, $password)
+{
+    if (!$con) {
         $error = mysqli_connect_error();
         print("Ошибка подключения к базе данных " . $error);
     } else {
@@ -80,4 +85,14 @@ function add_user($con, $user_name, $email, $password) {
         $add_user  = mysqli_query($con, $sql_add_user);
         return $add_user;
     }
+}
+
+// получаем все email'ы из базы, преобразуем их в массив и возвращаем массив
+function get_saved_email($con, $email)
+{
+    $saved_email = [];
+    $sql_email = "SELECT user_email FROM users WHERE user_email = " . $email;
+
+    $saved_email = sql_query_result($con, $sql_email);
+    return $saved_email;
 }

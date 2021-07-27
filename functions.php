@@ -1,5 +1,7 @@
 <?php
 require_once('helpers.php');
+require_once('db_functions.php');
+
 
 /**
  * Подсчитывает количество задач в одном проекте
@@ -11,13 +13,13 @@ require_once('helpers.php');
  */
 function get_tasks_summ($array, $title)
 {
-  $summ_tasks = 0;
-  foreach ($array as $item) {
-    if ($item['from_project'] == $title) {
-      $summ_tasks++;
+    $summ_tasks = 0;
+    foreach ($array as $item) {
+        if ($item['from_project'] == $title) {
+            $summ_tasks++;
+        }
     }
-  }
-  return $summ_tasks;
+    return $summ_tasks;
 };
 
 /**
@@ -30,11 +32,11 @@ function get_tasks_summ($array, $title)
  */
 function get_date_diff($date)
 {
-  $cur_date = time();
-  $quantity_seconds_in_hour = 3600;
+    $cur_date = time();
+    $quantity_seconds_in_hour = 3600;
 
-  $task_date = strtotime($date);
-  return floor(($task_date - $cur_date) / $quantity_seconds_in_hour);
+    $task_date = strtotime($date);
+    return floor(($task_date - $cur_date) / $quantity_seconds_in_hour);
 };
 
 /**
@@ -42,7 +44,7 @@ function get_date_diff($date)
  */
 function getPostVal($name)
 {
-  return $_POST[$name] ?? "";
+    return $_POST[$name] ?? "";
 }
 
 /**
@@ -52,9 +54,9 @@ function getPostVal($name)
  */
 function isRequiredField($field)
 {
-  if (empty($field)) {
-    return "Поле не заполнено";
-  };
+    if (empty($field)) {
+        return "Поле не заполнено";
+    };
 }
 
 /**
@@ -66,15 +68,15 @@ function isRequiredField($field)
  */
 function isCorrectLength($name, $min, $max)
 {
-  $result = isRequiredField($name);
+    $result = isRequiredField($name);
 
-  if (empty($result)) {
-    $len = mb_strlen($name, 'utf-8');
-    if ($len < $min or $len > $max) {
-      $result = "Длина поля должна быть от $min до $max символов";
+    if (empty($result)) {
+        $len = mb_strlen($name, 'utf-8');
+        if ($len < $min or $len > $max) {
+            $result = "Длина поля должна быть от $min до $max символов";
+        }
     }
-  }
-  return $result;
+    return $result;
 }
 
 
@@ -85,15 +87,15 @@ function isCorrectLength($name, $min, $max)
  */
 function isCorrectNumberProject($project)
 {
-  $result = isRequiredField($project);
+    $result = isRequiredField($project);
 
-  if (empty($result)) {
-    $number_project = (int)$project; // приводим к целому числу
-    if ($number_project <= 0) {
-      $result =  "Выберите проект из списка";
+    if (empty($result)) {
+        $number_project = (int)$project; // приводим к целому числу
+        if ($number_project <= 0) {
+            $result =  "Выберите проект из списка";
+        }
     }
-  }
-  return $result;
+    return $result;
 }
 
 /**
@@ -105,25 +107,25 @@ function isCorrectNumberProject($project)
  */
 function isCorrectDate($date)
 {
-  $current_date = date('Y-m-d');
+    $current_date = date('Y-m-d');
 
-  if (!empty($date)) {
-    if (!(is_date_valid($date))) {
-      return "Неверный формат даты";
-    } else if (strtotime($date) < strtotime($current_date)) {
-      return "Дата выполнения задачи должна быть больше или равна текущей";
+    if (!empty($date)) {
+        if (!(is_date_valid($date))) {
+            return "Неверный формат даты";
+        } else if (strtotime($date) < strtotime($current_date)) {
+            return "Дата выполнения задачи должна быть больше или равна текущей";
+        }
     }
-  }
 }
 
 // проверка размера файла
 function isCorrectFileSize($arr)
 {
-  $file_size = $arr['file']['size'];
+    $file_size = $arr['file']['size'];
 
-  if ($file_size > 5000000) {
-    return "Максимальный размер файла - 5Мб";
-  }
+    if ($file_size > 5000000) {
+        return "Максимальный размер файла - 5Мб";
+    }
 }
 
 /**
@@ -132,16 +134,20 @@ function isCorrectFileSize($arr)
  *
  * @return string Проверяет корректность веденного email, в случае несоответствия возвращает сообщение об ошибке
  */
-function isCorrectEmail($email)
+function isCorrectEmail($email, $con)
 {
-  $result = isRequiredField($email);
+    $result = isRequiredField($email);
 
-  if (empty($result)) {
-    if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $result = "Некорректный email";
+    $arr_email = get_saved_email($con, $email);
+
+    if (empty($result)) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $result = "Некорректный email";
+        } else if (!empty($arr_email)) {
+            $result = "Пользователь с таким email уже существует";
+        }
     }
-  }
-  return $result;
+    return $result;
 }
 
 /**
@@ -152,13 +158,13 @@ function isCorrectEmail($email)
  */
 function isCorrectPassword($password)
 {
-  $result = isRequiredField($password);
+    $result = isRequiredField($password);
 
-  if (empty($result)) {
-    $pattern_password = '/^[a-z0-9_]+$/i';
-    if (!preg_match($pattern_password, $password)) {
-        $result = "Пароль может содержать только цифры и буквы английского алфавита, а также знак подчеркивания";
-      }
+    if (empty($result)) {
+        $pattern_password = '/^[a-z0-9_]+$/i';
+        if (!preg_match($pattern_password, $password)) {
+            $result = "Пароль может содержать только цифры и буквы английского алфавита, а также знак подчеркивания";
+        }
     }
     return $result;
-  }
+}

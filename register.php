@@ -9,7 +9,7 @@ $errors = [];
 $registration_rules = [
     'email' => function () {
         if (isset($_POST['email'])) {
-            return isCorrectEmail($_POST['email']);
+            return isCorrectEmail($_POST['email'], $con);
         }
     },
     'password' => function () {
@@ -27,8 +27,8 @@ $registration_rules = [
 
 if (isset($_POST['submit'])) {
 
-     //применяем функции валидации полей формы к каждому элементу формы внутри цикла
-     foreach ($_POST as $key => $value) {
+    //применяем функции валидации полей формы к каждому элементу формы внутри цикла
+    foreach ($_POST as $key => $value) {
         if (isset($registration_rules[$key])) {
             $rule = $registration_rules[$key];
             $errors[$key] = $rule();
