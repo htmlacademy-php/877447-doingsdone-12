@@ -134,17 +134,13 @@ function isCorrectFileSize($arr)
  *
  * @return string Проверяет корректность веденного email, в случае несоответствия возвращает сообщение об ошибке
  */
-function isCorrectEmail($email, $con)
+function isCorrectEmail($email)
 {
     $result = isRequiredField($email);
-
-    $arr_email = get_saved_email($con, $email);
 
     if (empty($result)) {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $result = "Некорректный email";
-        } else if (!empty($arr_email)) {
-            $result = "Пользователь с таким email уже существует";
         }
     }
     return $result;

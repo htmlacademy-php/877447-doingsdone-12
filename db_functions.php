@@ -90,9 +90,9 @@ function add_user($con, $user_name, $email, $password)
 // получаем все email'ы из базы, преобразуем их в массив и возвращаем массив
 function get_saved_email($con, $email)
 {
-    $saved_email = [];
-    $sql_email = "SELECT user_email FROM users WHERE user_email = " . $email;
+    // $saved_email = [];
+    $sql_email = "SELECT user_email FROM users WHERE user_email = '".$email."'";
 
     $saved_email = sql_query_result($con, $sql_email);
-    return $saved_email;
+    return count($saved_email) == 0 ? "" : "Пользователь с таким email уже существует";
 }

@@ -9,7 +9,7 @@ $errors = [];
 $registration_rules = [
     'email' => function () {
         if (isset($_POST['email'])) {
-            return isCorrectEmail($_POST['email'], $con);
+            return isCorrectEmail($_POST['email']);
         }
     },
     'password' => function () {
@@ -34,6 +34,8 @@ if (isset($_POST['submit'])) {
             $errors[$key] = $rule();
         }
     }
+
+    if(empty($errors['email'])) $errors['email'] = get_saved_email($con, $_POST['email']);
 
     $errors = array_filter($errors);
 
