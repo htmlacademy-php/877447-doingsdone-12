@@ -87,17 +87,18 @@ function add_user($con, $user_name, $email, $password)
     }
 }
 
-// получаем все email'ы из базы, преобразуем их в массив и возвращаем массив
+// Проверяем, существует ли уже такой email в базе. Для этого отправляем запрос
+// Если возвращается ноль записей, выводим пустую строку, иначе - сообщение об ошибке
 function get_saved_email($con, $email)
 {
-    // $saved_email = [];
     $sql_email = "SELECT user_email FROM users WHERE user_email = '".$email."'";
 
     $saved_email = sql_query_result($con, $sql_email);
     return count($saved_email) == 0 ? "" : "Пользователь с таким email уже существует";
 }
 
-// получаем все логины из базы, преобразуем их в массив и возвращаем массив
+// Проверяем, существует ли уже такой логин в базе. Для этого отправляем запрос
+// Если возвращается ноль записей, выводим пустую строку, иначе - сообщение об ошибке
 function get_saved_login($con, $name)
 {
     $sql_login = "SELECT user_name FROM users WHERE user_name = '".$name."'";
