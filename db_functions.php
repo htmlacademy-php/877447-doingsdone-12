@@ -96,3 +96,13 @@ function get_saved_email($con, $email)
     $saved_email = sql_query_result($con, $sql_email);
     return count($saved_email) == 0 ? "" : "Пользователь с таким email уже существует";
 }
+
+// получаем все логины из базы, преобразуем их в массив и возвращаем массив
+function get_saved_login($con, $name)
+{
+    $sql_login = "SELECT user_name FROM users WHERE user_name = '".$name."'";
+
+    $saved_login = sql_query_result($con, $sql_login);
+    return count($saved_login) == 0 ? "" : "Пользователь с таким логином уже существует";
+}
+

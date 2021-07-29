@@ -36,6 +36,7 @@ if (isset($_POST['submit'])) {
     }
 
     if(empty($errors['email'])) $errors['email'] = get_saved_email($con, $_POST['email']);
+    if(empty($errors['name'])) $errors['name'] = get_saved_login($con, $_POST['name']);
 
     $errors = array_filter($errors);
 
