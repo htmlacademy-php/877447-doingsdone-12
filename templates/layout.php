@@ -25,14 +25,14 @@
 
             <div class="main-header__side-item user-menu">
               <div class="user-menu__data">
-                <p>Константин</p>
+                <p><?= print($_SESSION['user']); ?></p>
 
                 <a href="#">Выйти</a>
               </div>
             </div>
 
           <?php else : ?>
-            <a class="main-header__side-item button button--transparent" href="register.php">Войти</a>
+            <a class="main-header__side-item button button--transparent" href="auth.php">Войти</a>
 
           <?php endif; ?>
         </div>

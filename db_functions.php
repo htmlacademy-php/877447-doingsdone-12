@@ -91,7 +91,7 @@ function add_user($con, $user_name, $email, $password)
 // Если возвращается ноль записей, выводим пустую строку, иначе - сообщение об ошибке
 function get_saved_email($con, $email)
 {
-    $sql_email = "SELECT user_email FROM users WHERE user_email = '".$email."'";
+    $sql_email = "SELECT user_email FROM users WHERE user_email = '" . $email . "'";
 
     $saved_email = sql_query_result($con, $sql_email);
     return count($saved_email) == 0 ? "" : "Пользователь с таким email уже существует";
@@ -101,9 +101,18 @@ function get_saved_email($con, $email)
 // Если возвращается ноль записей, выводим пустую строку, иначе - сообщение об ошибке
 function get_saved_login($con, $name)
 {
-    $sql_login = "SELECT user_name FROM users WHERE user_name = '".$name."'";
+    $sql_login = "SELECT user_name FROM users WHERE user_name = '" . $name . "'";
 
     $saved_login = sql_query_result($con, $sql_login);
     return count($saved_login) == 0 ? "" : "Пользователь с таким логином уже существует";
 }
 
+// получаем информацию о пользователе из БД по его емейлу
+function search_user($con, $email)
+{
+    $user_data = [];
+    $sql_user_data = "SELECT id, user_name, user_email, user_password FROM users WHERE user_email = '" . $email . "'";
+    $user_data = sql_query_result($con, $sql_user_data);
+
+    return $user_data;
+}

@@ -29,10 +29,29 @@ if (isset($_POST['submit'])) {
         }
     }
 
+    $errors = array_filter($errors);
+
+    if (empty($errors)) {
+        $user = search_user($con, $_POST['email']);
+        print_r($user);
+
+        if ($user['user_email'] == $_POST['email']) {
+            $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+            if (password_verify($user['user_password'], $passwordHash)) {
+                // верный пароль, открываем сессию
+                session_start();
+                $_SESSION['id'] = $user['id'];
+                $_SESSION['user'] = $user['user_name'];
+
+                header('Location: index.php');
+            } else {
+                // неверный пароль
+                $errors['password'] = 'Неверный пароль';
+            }
+        }
+    }
 }
-
-
-
 
 
 $main_content = include_template('form_auth.php', ['errors' => $errors]);
