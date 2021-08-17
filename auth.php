@@ -36,9 +36,9 @@ if (isset($_POST['submit'])) {
         print_r($user);
 
         if ($user['user_email'] == $_POST['email']) {
-            $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+            $password_auth = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-            if (password_verify($user['user_password'], $passwordHash)) {
+            if (password_verify($user['user_password'], $password_auth)) {
                 // верный пароль, открываем сессию
                 session_start();
                 $_SESSION['id'] = $user['id'];
@@ -53,9 +53,7 @@ if (isset($_POST['submit'])) {
     }
 }
 
-
 $main_content = include_template('form_auth.php', ['errors' => $errors]);
-
 $layout = include_template('layout.php', ['main_content' => $main_content, 'title' => $title]);
 
 print($layout);

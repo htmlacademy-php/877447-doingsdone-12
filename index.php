@@ -2,7 +2,7 @@
 require_once('settings.php');
 
 $title = 'Дела в порядке';
-$user_name = null;
+$user_id = null;
 session_start();
 
 
