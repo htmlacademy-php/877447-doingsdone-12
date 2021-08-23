@@ -9,7 +9,7 @@ if (!isset($_SESSION['user'])) {
     exit;
 };
 
-$user_id = $_SESSION['id'];
+$user_id = $_SESSION['user']['id'];
 $projects = get_projects($con, $user_id);
 $required_fields = ['name', 'project']; // обязательные для заполнения поля
 $errors = [];
