@@ -33,17 +33,14 @@ if (isset($_POST['submit'])) {
 
     if (empty($errors)) {
         $user = search_user($con, $_POST['email']);
-        print_r($user);
+        // print_r($user);
 
         if ($user['user_email'] == $_POST['email']) {
-            $password_auth = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-            if (password_verify($user['user_password'], $password_auth)) {
+            if (password_verify($_POST['password'], $user['user_password'])) {
                 // верный пароль, открываем сессию
                 session_start();
-                $_SESSION['id'] = $user['id'];
-                $_SESSION['user'] = $user['user_name'];
-
+                $_SESSION['user'] = $user;
                 header('Location: index.php');
             } else {
                 // неверный пароль

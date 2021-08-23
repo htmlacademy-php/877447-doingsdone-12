@@ -5,9 +5,8 @@ $title = 'Дела в порядке';
 $user_id = null;
 session_start();
 
-
-if (isset($_SESSION['id'])) {
-    $user_id = $_SESSION['id'];
+if (isset($_SESSION['user'])) {
+    $user_id = $_SESSION['user']['id'];
 
     // показывать или нет выполненные задачи
     $show_complete_tasks = rand(0, 1);

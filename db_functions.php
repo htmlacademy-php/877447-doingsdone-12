@@ -111,8 +111,8 @@ function get_saved_login($con, $name)
 function search_user($con, $email)
 {
     $user_data = [];
-    $sql_user_data = "SELECT id, user_name, user_email, user_password FROM users WHERE user_email = '" . $email . "'";
+    $sql_user_data = "SELECT id, user_name, user_email, user_password FROM users WHERE user_email = '" . $email . "' LIMIT 1";
     $user_data = sql_query_result($con, $sql_user_data);
 
-    return $user_data;
+    return $user_data[0];
 }
