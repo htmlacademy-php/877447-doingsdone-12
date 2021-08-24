@@ -1,8 +1,15 @@
 <?php
 require_once('settings.php');
 
-$user_id = 3;
 $title = 'Добавить задачу';
+session_start();
+
+if (!isset($_SESSION['user'])) {
+    header('Location: index.php');
+    exit;
+};
+
+$user_id = $_SESSION['user']['id'];
 $projects = get_projects($con, $user_id);
 $required_fields = ['name', 'project']; // обязательные для заполнения поля
 $errors = [];
@@ -39,9 +46,8 @@ if (isset($_POST['submit'])) {
 
     $errors = array_filter($errors);
 
-
     // валидация файлового поля
-     if (empty($errors)) {
+    if (empty($errors)) {
 
         $file_url = '';
         if (isset($_FILES['file']) && !empty($_FILES['file']['name'])) {

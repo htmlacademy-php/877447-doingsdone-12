@@ -9,32 +9,37 @@
   <link rel="stylesheet" href="css/flatpickr.min.css">
 </head>
 
-<body>
+<body class="<?php !isset($_SESSION['user']) ? print "body-background" : print ""; ?>">
   <h1 class="visually-hidden">Дела в порядке</h1>
 
   <div class="page-wrapper">
-    <div class="container container--with-sidebar">
+    <div class="container <?php isset($_SESSION['user']) ? print "container--with-sidebar" : print ""; ?>">
       <header class="main-header">
         <a href="/">
           <img src="img/logo.png" width="153" height="42" alt="Логотип Дела в порядке">
         </a>
 
         <div class="main-header__side">
-          <a class="main-header__side-item button button--transparent" href="register.php">Войти</a>
-          <!-- <a class="main-header__side-item button button--plus open-modal" href="add.php">Добавить задачу</a>
+          <?php if (isset($_SESSION['user'])) : ?>
+            <a class="main-header__side-item button button--plus open-modal" href="add.php">Добавить задачу</a>
 
-          <div class="main-header__side-item user-menu">
-            <div class="user-menu__data">
-              <p>Константин</p>
+            <div class="main-header__side-item user-menu">
+              <div class="user-menu__data">
+                <p><?= $_SESSION['user']['user_name']; ?></p>
 
-              <a href="#">Выйти</a>
+                <a href="logout.php">Выйти</a>
+              </div>
             </div>
-        </div> -->
-    </div>
-    </header>
 
-    <div class="content"><?= $main_content;  ?></div>
-  </div>
+          <?php else : ?>
+            <a class="main-header__side-item button button--transparent" href="auth.php">Войти</a>
+
+          <?php endif; ?>
+        </div>
+      </header>
+
+      <div class="content"><?= $main_content;  ?></div>
+    </div>
   </div>
 
   <footer class="main-footer">
@@ -44,9 +49,9 @@
 
         <p>Веб-приложение для удобного ведения списка дел.</p>
       </div>
-
+      <?php if (isset($_SESSION['user'])) : ?>
       <a class="main-footer__button button button--plus" href="add.php">Добавить задачу</a>
-
+      <?php endif; ?>
       <div class="main-footer__social social">
         <span class="visually-hidden">Мы в соцсетях:</span>
         <a class="social__link social__link--facebook" href="#">
