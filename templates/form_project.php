@@ -3,7 +3,7 @@
     <h2 class="content__side-heading">Проекты</h2>
 
 
-    <a class="button button--transparent button--plus content__side-button" href="form-project. html">Добавить проект</a>
+    <a class="button button--transparent button--plus content__side-button" href="add_project.php">Добавить проект</a>
   </section>
 
   <main class="content__main">

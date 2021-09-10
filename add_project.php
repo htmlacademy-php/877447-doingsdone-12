@@ -38,10 +38,7 @@ if (isset($_POST['submit'])) {
         header('Location: index.php');
         exit;
     }
-
 }
-
-
 
 $main_content = include_template('form_project.php', ['projects' => $projects, 'errors' => $errors]);
 
