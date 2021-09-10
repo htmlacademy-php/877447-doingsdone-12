@@ -72,6 +72,19 @@ function add_task($con, $task_title, $from_project, $date_deadline, $file)
     }
 }
 
+// добавление нового проекта
+function add_project($con, $project_title, $user_id)
+{
+    if (!$con) {
+        $error = mysqli_connect_error();
+        print("Ошибка подключения к базе данных " . $error);
+    } else {
+        $sql_add_project = "INSERT INTO projects SET project_title = '$project_title', user_id = $user_id";
+        $add_project  = mysqli_query($con, $sql_add_project);
+        return $add_project;
+    }
+}
+
 // добавление нового пользователя
 function add_user($con, $user_name, $email, $password)
 {
@@ -116,3 +129,14 @@ function search_user($con, $email)
 
     return $user_data[0];
 }
+
+// // получаем задачи через поиск
+// function search_task($con, $user_id)
+// {
+//     $tasks = [];
+//     $search_word = $_GET['search-tasks'] ?? '';
+//     $sql_search_tasks = "SELECT * FROM tasks WHERE MATCH(task_title) AGAINST('$search_word') AND user_id = $user_id";
+//     $tasks = sql_query_result($con, $sql_search_tasks);
+
+//     return $tasks;
+// }

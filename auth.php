@@ -33,7 +33,6 @@ if (isset($_POST['submit'])) {
 
     if (empty($errors)) {
         $user = search_user($con, $_POST['email']);
-        // print_r($user);
 
         if ($user['user_email'] == $_POST['email']) {
 

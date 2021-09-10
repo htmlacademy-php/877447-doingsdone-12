@@ -30,3 +30,6 @@ CREATE TABLE tasks (
   file VARCHAR(255),
   FOREIGN KEY(from_project) REFERENCES projects(id)
 );
+
+-- -- создаем индекс для полнотекстового поиска по названию задачи
+-- CREATE FULLTEXT INDEX search_task ON tasks(task_title);
