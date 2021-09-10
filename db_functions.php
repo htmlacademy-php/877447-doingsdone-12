@@ -49,7 +49,7 @@ function get_tasks($con, $user_id)
         $sql_tasks = "SELECT * FROM tasks WHERE from_project = " . $_GET['project_id'];
     } else {
         // получение полного списка задач у текущего пользователя
-        $sql_tasks = "SELECT DISTINCT t.* FROM tasks t INNER JOIN projects p ON t.from_project = t.from_project WHERE p.user_id = " . $user_id . " ORDER BY t.date_add DESC";
+        $sql_tasks = "SELECT DISTINCT t.* FROM tasks t INNER JOIN projects p ON t.from_project = t.from_project WHERE t.user_id = " . $user_id . " ORDER BY t.date_add DESC";
     }
 
     $tasks = sql_query_result($con, $sql_tasks);
@@ -57,7 +57,7 @@ function get_tasks($con, $user_id)
 };
 
 // добавление новой задачи
-function add_task($con, $task_title, $from_project, $date_deadline, $file)
+function add_task($con, $task_title, $from_project, $date_deadline, $file, $user_id)
 {
     if (!$con) {
         $error = mysqli_connect_error();
@@ -66,7 +66,7 @@ function add_task($con, $task_title, $from_project, $date_deadline, $file)
         $str_deadline = "";
         if (!empty($date_deadline)) $str_deadline = "date_deadline = '" . $date_deadline . "', ";
 
-        $sql_add_task = "INSERT INTO tasks SET task_title = '$task_title', user_id = 3, from_project = '$from_project', " . $str_deadline . " file = '$file'";
+        $sql_add_task = "INSERT INTO tasks SET task_title = '$task_title', user_id = " . $user_id . ", from_project = '$from_project', " . $str_deadline . " file = '$file'";
         $add_task  = mysqli_query($con, $sql_add_task);
         return $add_task;
     }
@@ -79,7 +79,7 @@ function add_project($con, $project_title, $user_id)
         $error = mysqli_connect_error();
         print("Ошибка подключения к базе данных " . $error);
     } else {
-        $sql_add_project = "INSERT INTO projects SET project_title = '$project_title', user_id = $user_id";
+        $sql_add_project = "INSERT INTO projects SET project_title = '$project_title', user_id = " . $user_id;
         $add_project  = mysqli_query($con, $sql_add_project);
         return $add_project;
     }
