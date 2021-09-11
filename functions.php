@@ -164,13 +164,3 @@ function isCorrectPassword($password)
     }
     return $result;
 }
-
-
-// function isDoubleProjectName($newProjectName, $projectsNames)
-// {
-//     $result = "";
-//     if (array_search(mb_strtolower($newProjectName, $projectsNames))) {
-//         $result = "Такой проект уже существует";
-//     }
-//     return $result;
-// }

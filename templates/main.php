@@ -42,6 +42,9 @@
 
     <table class="tasks">
       <?php
+      if (empty($tasks)) {
+        print("По вашему запросу ничего не найдено");
+      }
       if (count($tasks) === 0) {
         http_response_code(404);
         print ($error_template);

@@ -140,13 +140,13 @@ function get_saved_project_name($con, $project_name)
     return count($saved_project_name) == 0 ? "" : "Такой проект уже существует";
 }
 
-// // получаем задачи через поиск
-// function search_task($con, $user_id)
-// {
-//     $tasks = [];
-//     $search_word = $_GET['search-tasks'] ?? '';
-//     $sql_search_tasks = "SELECT * FROM tasks WHERE MATCH(task_title) AGAINST('$search_word') AND user_id = $user_id";
-//     $tasks = sql_query_result($con, $sql_search_tasks);
+// получаем задачи через поиск
+function search_tasks($con, $user_id)
+{
+    $tasks = [];
+    $search_word = $_GET['search-tasks'] ?? '';
+    $sql_search_tasks = "SELECT * FROM tasks WHERE MATCH(task_title) AGAINST('$search_word' IN BOOLEAN MODE) AND user_id = " . $user_id;
+    $tasks = sql_query_result($con, $sql_search_tasks);
 
-//     return $tasks;
-// }
+    return $tasks;
+}
