@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
             move_uploaded_file($_FILES['file']['tmp_name'], $file_path . $file_name);
         }
 
-        add_task($con, $_POST['name'], $_POST['project'], $_POST['date'], $file_url);
+        add_task($con, $_POST['name'], $_POST['project'], $_POST['date'], $file_url, $user_id);
         header('Location: index.php');
         exit;
     }

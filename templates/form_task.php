@@ -4,44 +4,26 @@
 
         <nav class="main-navigation">
           <ul class="main-navigation__list">
-            <li class="main-navigation__list-item">
-              <a class="main-navigation__list-item-link" href="#">Входящие</a>
-              <span class="main-navigation__list-item-count">24</span>
-            </li>
-
-            <li class="main-navigation__list-item main-navigation__list-item--active">
-              <a class="main-navigation__list-item-link" href="#">Работа</a>
-              <span class="main-navigation__list-item-count">12</span>
-            </li>
-
-            <li class="main-navigation__list-item">
-              <a class="main-navigation__list-item-link" href="#">Здоровье</a>
-              <span class="main-navigation__list-item-count">3</span>
-            </li>
-
-            <li class="main-navigation__list-item">
-              <a class="main-navigation__list-item-link" href="#">Домашние дела</a>
-              <span class="main-navigation__list-item-count">7</span>
-            </li>
-
-            <li class="main-navigation__list-item">
-              <a class="main-navigation__list-item-link" href="#">Авто</a>
-              <span class="main-navigation__list-item-count">0</span>
-            </li>
+            <?php foreach ($projects as $project) : ?>
+              <li class="main-navigation__list-item <?= ($project['id'] == $_GET['project_id']) ? 'main-navigation__list-item--active' : '' ?>">
+                <a class="main-navigation__list-item-link" href="/index.php?project_id=<?= $project['id']; ?>"><?= htmlspecialchars($project['project_title']); ?></a>
+                <span class="main-navigation__list-item-count"><?= $project['c_tasks'] ?></span>
+              </li>
+            <?php endforeach; ?>
           </ul>
         </nav>
 
-        <a class="button button--transparent button--plus content__side-button" href="form-project.html">Добавить проект</a>
+        <a class="button button--transparent button--plus content__side-button" href="add_project.php">Добавить проект</a>
       </section>
 
       <main class="content__main">
         <h2 class="content__main-heading">Добавление задачи</h2>
 
-        <form class="form"  action="add.php" method="post" autocomplete="off" enctype="multipart/form-data">
+        <form class="form" action="add_task.php" method="post" autocomplete="off" enctype="multipart/form-data">
           <div class="form__row">
             <label class="form__label" for="name">Название <sup>*</sup></label>
 
-            <input class="form__input <?php isset($errors['name']) ? print 'form__input--error' : print ''; ?>" type="text" name="name" id="name" value="<?=htmlspecialchars(getPostVal('name'));?>" placeholder="Введите название">
+            <input class="form__input <?php isset($errors['name']) ? print 'form__input--error' : print ''; ?>" type="text" name="name" id="name" value="<?= htmlspecialchars(getPostVal('name')); ?>" placeholder="Введите название">
             <p class="form__message"><?= $errors['name'] ?></p>
           </div>
 
@@ -50,9 +32,7 @@
 
             <select class="form__input form__input--select <?php isset($errors['project']) ? print 'form__input--error' : print ''; ?>" name="project" id="project">
               <?php foreach ($projects as $project) : ?>
-                <option value=<?=$project['id'];?>
-                <?= (int)getPostVal('project') === (int)$project['id'] ? "selected" : ""; ?>
-                ><?=$project['project_title'];?></option>
+                <option value=<?= $project['id']; ?> <?= (int)getPostVal('project') === (int)$project['id'] ? "selected" : ""; ?>><?= $project['project_title']; ?></option>
               <?php endforeach; ?>
             </select>
             <p class="form__message"><?= $errors['project'] ?></p>
@@ -61,7 +41,7 @@
           <div class="form__row">
             <label class="form__label" for="date">Дата выполнения</label>
 
-            <input class="form__input form__input--date <?php isset($errors['date']) ? print 'form__input--error' : print ''; ?>" type="text" name="date" id="date" value="<?= getPostVal('date');?>" placeholder="Введите дату в формате ГГГГ-ММ-ДД">
+            <input class="form__input form__input--date <?php isset($errors['date']) ? print 'form__input--error' : print ''; ?>" type="text" name="date" id="date" value="<?= getPostVal('date'); ?>" placeholder="Введите дату в формате ГГГГ-ММ-ДД">
             <p class="form__message"><?= $errors['date'] ?></p>
           </div>
 
@@ -76,7 +56,7 @@
               </label>
 
               <p class="form__file-name">
-              <?= isset($_FILES['file']) ? ($_FILES['file']['name']) : '';  ?>
+                <?= isset($_FILES['file']) ? ($_FILES['file']['name']) : '';  ?>
               </p>
               <p class="form__message"><?= $errors['file'] ?></p>
 
@@ -90,6 +70,5 @@
         <p class="error-message"><?php !empty($errors) ? print 'Пожалуйста, исправьте ошибки в форме' : ''; ?></p>
       </main>
     </div>
-  </div>
-</div>
-
+    </div>
+    </div>

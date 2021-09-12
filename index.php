@@ -16,6 +16,12 @@ if (isset($_SESSION['user'])) {
 
     $error_template = include_template('error.php');
 
+    if(isset($_GET['submit-search'])) {
+        $tasks = search_tasks($con, $user_id);
+    } else {
+        $tasks = get_tasks($con, $user_id);
+    }
+
     $main_content = include_template('main.php', ['error_template' => $error_template, 'projects' => $projects, 'tasks' => $tasks, 'show_complete_tasks' => $show_complete_tasks, 'quantity_hours_in_day' => $quantity_hours_in_day]);
 } else {
     $main_content = include_template('guest.php');
