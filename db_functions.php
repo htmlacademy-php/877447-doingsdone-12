@@ -47,6 +47,8 @@ function get_tasks($con, $user_id)
     $tasks = [];
     if (isset($_GET['project_id'])) {
         $sql_tasks = "SELECT * FROM tasks WHERE from_project = " . $_GET['project_id'];
+    } else if (isset($_GET['filter'])) {
+        $sql_tasks = "SELECT * FROM tasks WHERE user_id = " . $user_id;
     } else {
         // получение полного списка задач у текущего пользователя
         $sql_tasks = "SELECT DISTINCT t.* FROM tasks t INNER JOIN projects p ON t.from_project = t.from_project WHERE t.user_id = " . $user_id . " ORDER BY t.date_add DESC";

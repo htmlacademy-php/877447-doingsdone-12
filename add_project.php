@@ -33,6 +33,8 @@ if (isset($_POST['submit'])) {
 
     if(empty($errors['name'])) $errors['name'] = get_saved_project_name($con, $_POST['name']);
 
+
+
     $errors = array_filter($errors);
 
     if (empty($errors)) {

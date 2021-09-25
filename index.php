@@ -22,6 +22,38 @@ if (isset($_SESSION['user'])) {
         $tasks = get_tasks($con, $user_id);
     }
 
+
+
+    $filter = filter_input(INPUT_GET, 'filter');
+    $filterTasks = [];
+
+    if ($filter == 'today') {
+        foreach ($tasks as $task) :
+            if (strtotime($task['date_deadline']) == strtotime(date('Y-m-d'))) {
+                array_push($filterTasks, $task);
+            };
+        endforeach;
+    } else if ($filter == 'tomorrow') {
+        foreach ($tasks as $task) :
+            if (strtotime($task['date_deadline']) == strtotime(date('Y-m-d')) + 86400) {
+                array_push($filterTasks, $task);
+            };
+        endforeach;
+    } else if ($filter == 'expired') {
+        foreach ($tasks as $task) :
+            if (strtotime($task['date_deadline']) < strtotime(date('Y-m-d'))) {
+                array_push($filterTasks, $task);
+            };
+        endforeach;
+    } else {
+      $filterTasks = $tasks;
+    }
+
+    $tasks = $filterTasks;
+
+
+
+
     $main_content = include_template('main.php', ['error_template' => $error_template, 'projects' => $projects, 'tasks' => $tasks, 'show_complete_tasks' => $show_complete_tasks, 'quantity_hours_in_day' => $quantity_hours_in_day]);
 } else {
     $main_content = include_template('guest.php');
