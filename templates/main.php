@@ -26,9 +26,9 @@
 
     <div class="tasks-controls">
       <nav class="tasks-switch">
-      <?php if (isset($_GET['filter'])) {
-                $filter = $_GET['filter'];
-            } ?>
+        <?php if (isset($_GET['filter'])) {
+          $filter = $_GET['filter'];
+        } ?>
         <a href="/index.php?filter=all" class="tasks-switch__item <?= $filter == '' || $filter == 'all' ? 'tasks-switch__item--active' : '' ?> ">Все задачи</a>
         <a href="/index.php?filter=today" class="tasks-switch__item <?= $filter == 'today' ? 'tasks-switch__item--active' : '' ?> ">Повестка дня</a>
         <a href="/index.php?filter=tomorrow" class="tasks-switch__item <?= $filter == 'tomorrow' ? 'tasks-switch__item--active' : '' ?>">Завтра</a>
@@ -47,34 +47,34 @@
       <?php
       if (count($tasks) === 0) {
         http_response_code(404);
-        print ($error_template);
+        print($error_template);
       } else {
-      foreach ($tasks as $task) {
-        if ($task['task_status'] == true && $show_complete_tasks == 0) {
-          continue;
-        }
+        foreach ($tasks as $task) {
+          if ($task['task_status'] == true && $show_complete_tasks == 0) {
+            continue;
+          }
       ?>
-        <tr class="tasks__item task <? echo (intval($task['task_status']) === 1 && $show_complete_tasks == 1) ? 'task--completed' : ''  ?>
+          <tr class="tasks__item task <? echo (intval($task['task_status']) === 1 && $show_complete_tasks == 1) ? 'task--completed' : ''  ?>
         <? echo (intval($task['task_status']) !== 1 && $task['date_deadline'] !== null && get_date_diff($task['date_deadline']) <= $quantity_hours_in_day) ? 'task--important' : '' ?>">
 
-          <td class="task__select">
-            <label class="checkbox task__checkbox">
-              <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
-              <span class="checkbox__text"><?= htmlspecialchars($task['task_title']); ?></span>
-            </label>
-          </td>
+            <td class="task__select">
+              <label class="checkbox task__checkbox">
+                <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
+                <span class="checkbox__text"><?= htmlspecialchars($task['task_title']); ?></span>
+              </label>
+            </td>
 
-          <td class="task__file">
-          <?php if (!empty($task['file'])):?>
-          <a class="download-link" href="<?=$task['file']?>"><?= substr($task['file'], 9); ?></a>
-          <?php endif; ?>
-          </td>
-          <td class="task__date"><?= htmlspecialchars($task['date_deadline']); ?></td>
-        </tr>
+            <td class="task__file">
+              <?php if (!empty($task['file'])) : ?>
+                <a class="download-link" href="<?= $task['file'] ?>"><?= substr($task['file'], 9); ?></a>
+              <?php endif; ?>
+            </td>
+            <td class="task__date"><?= htmlspecialchars($task['date_deadline']); ?></td>
+          </tr>
       <?php }
       } ?>
       <!--показывать следующий тег <tr/>, если переменная $show_complete_tasks равна единице-->
-    <?php if ($show_complete_tasks == 1) : ?>
+      <?php if ($show_complete_tasks == 1) : ?>
         <!-- <tr class="tasks__item task task--completed">
           <td class="task__select">
             <label class="checkbox task__checkbox">
