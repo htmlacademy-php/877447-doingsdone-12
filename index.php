@@ -22,8 +22,6 @@ if (isset($_SESSION['user'])) {
         $tasks = get_tasks($con, $user_id);
     }
 
-
-
     $filter = filter_input(INPUT_GET, 'filter');
     $filterTasks = [];
 
@@ -50,9 +48,6 @@ if (isset($_SESSION['user'])) {
     }
 
     $tasks = $filterTasks;
-
-
-
 
     $main_content = include_template('main.php', ['error_template' => $error_template, 'projects' => $projects, 'tasks' => $tasks, 'show_complete_tasks' => $show_complete_tasks, 'quantity_hours_in_day' => $quantity_hours_in_day]);
 } else {
