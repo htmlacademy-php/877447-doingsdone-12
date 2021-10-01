@@ -42,16 +42,25 @@ function get_projects($con, $user_id)
 };
 
 //  проверка на существование параметра запроса с идентификатором проекта. Если параметр присутствует, то показывать только те задачи, что относятся к этому проекту
-function get_tasks($con, $user_id)
+function get_tasks($con, $user_id, $filter)
 {
     $tasks = [];
     if (isset($_GET['project_id'])) {
         $sql_tasks = "SELECT * FROM tasks WHERE from_project = " . $_GET['project_id'];
-    } else if (isset($_GET['filter'])) {
-        $sql_tasks = "SELECT * FROM tasks WHERE user_id = " . $user_id;
     } else {
+        // устанавливаем t.date_deadline в зависимости от параметра запроса
+        $whereSql = "";
+        if($filter == 'today') {
+            $whereSql = "t.date_deadline = CURDATE()";
+        } else if ($filter == 'tomorrow') {
+            $whereSql = "t.date_deadline = ADDDATE(CURDATE(),INTERVAL 1 DAY)";
+        } else if ($filter == 'expired') {
+            $whereSql = "t.date_deadline < CURDATE()";
+        } else if ($filter = '' || $filter = 'all') {
+            $whereSql = '1';
+        }
         // получение полного списка задач у текущего пользователя
-        $sql_tasks = "SELECT DISTINCT t.* FROM tasks t INNER JOIN projects p ON t.from_project = t.from_project WHERE t.user_id = " . $user_id . " ORDER BY t.date_add DESC";
+        $sql_tasks = "SELECT DISTINCT t.* FROM tasks t INNER JOIN projects p ON t.from_project = t.from_project WHERE t.user_id = " . $user_id . " AND  " . $whereSql . " ORDER BY t.date_add DESC";
     }
 
     $tasks = sql_query_result($con, $sql_tasks);
@@ -132,15 +141,15 @@ function search_user($con, $email)
     return $user_data[0];
 }
 
-// Проверяем, существует ли уже такой проект в базе. Для этого отправляем запрос
-// Если возвращается ноль записей, выводим пустую строку, иначе - сообщение об ошибке
-function get_saved_project_name($con, $project_name)
-{
-    $sql_project_name = "SELECT project_title FROM projects WHERE project_title = '" . $project_name . "'";
+// // Проверяем, существует ли уже такой проект в базе. Для этого отправляем запрос
+// // Если возвращается ноль записей, выводим пустую строку, иначе - сообщение об ошибке
+// function get_saved_project_name($con, $project_name)
+// {
+//     $sql_project_name = "SELECT project_title FROM projects WHERE project_title = '" . $project_name . "'";
 
-    $saved_project_name = sql_query_result($con, $sql_project_name);
-    return count($saved_project_name) == 0 ? "" : "Такой проект уже существует";
-}
+//     $saved_project_name = sql_query_result($con, $sql_project_name);
+//     return count($saved_project_name) == 0 ? "" : "Такой проект уже существует";
+// }
 
 // получаем задачи через поиск
 function search_tasks($con, $user_id)

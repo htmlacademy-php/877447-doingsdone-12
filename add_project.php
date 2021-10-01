@@ -23,17 +23,18 @@ $rules_projects = [
 ];
 
 if (isset($_POST['submit'])) {
-       //применяем функции валидации полей формы к каждому элементу формы внутри цикла
-       foreach ($_POST as $key => $value) {
+    //применяем функции валидации полей формы к каждому элементу формы внутри цикла
+    foreach ($_POST as $key => $value) {
         if (isset($rules_projects[$key])) {
             $rule = $rules_projects[$key];
             $errors[$key] = $rule();
         }
     }
 
-    if(empty($errors['name'])) $errors['name'] = get_saved_project_name($con, $_POST['name']);
-
-
+    // if(empty($errors['name'])) $errors['name'] = get_saved_project_name($con, $_POST['name']);
+    if (array_search($_POST['name'], $projects)) {
+        $errors['name'] = "Такой проект уже существует";
+    }
 
     $errors = array_filter($errors);
 
