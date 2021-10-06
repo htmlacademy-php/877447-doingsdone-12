@@ -31,8 +31,7 @@ if (isset($_POST['submit'])) {
         }
     }
 
-    // if(empty($errors['name'])) $errors['name'] = get_saved_project_name($con, $_POST['name']);
-    if (array_search($_POST['name'], $projects)) {
+    if (in_array_r($_POST['name'], $projects,  $strict = false)) {
         $errors['name'] = "Такой проект уже существует";
     }
 

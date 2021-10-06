@@ -141,16 +141,6 @@ function search_user($con, $email)
     return $user_data[0];
 }
 
-// // Проверяем, существует ли уже такой проект в базе. Для этого отправляем запрос
-// // Если возвращается ноль записей, выводим пустую строку, иначе - сообщение об ошибке
-// function get_saved_project_name($con, $project_name)
-// {
-//     $sql_project_name = "SELECT project_title FROM projects WHERE project_title = '" . $project_name . "'";
-
-//     $saved_project_name = sql_query_result($con, $sql_project_name);
-//     return count($saved_project_name) == 0 ? "" : "Такой проект уже существует";
-// }
-
 // получаем задачи через поиск
 function search_tasks($con, $user_id)
 {
