@@ -42,14 +42,22 @@ function get_projects($con, $user_id)
 };
 
 //  проверка на существование параметра запроса с идентификатором проекта. Если параметр присутствует, то показывать только те задачи, что относятся к этому проекту
-function get_tasks($con, $user_id, $filter)
+function get_tasks($con, $user_id, $check, $filter)
 {
     $tasks = [];
+    $whereSql = "";
     if (isset($_GET['project_id'])) {
         $sql_tasks = "SELECT * FROM tasks WHERE from_project = " . $_GET['project_id'];
-    } else {
+    } else if (isset($_GET['check'])) {
+        if($check == 1) {
+            $whereSql = "task_status = true";
+        } else {
+            $whereSql = "task_status = false";
+        }
+        $sql_task_update = "UPDATE task_status SET " . $whereSql . " WHERE id = " . $_GET['task_id'];
+        array_push($tasks, $sql_task_update);
+    } else  {
         // устанавливаем t.date_deadline в зависимости от параметра запроса
-        $whereSql = "";
         if($filter == 'today') {
             $whereSql = "t.date_deadline = CURDATE()";
         } else if ($filter == 'tomorrow') {
