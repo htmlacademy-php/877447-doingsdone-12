@@ -11,7 +11,6 @@ if (isset($_SESSION['user'])) {
   $filter = filter_input(INPUT_GET, 'filter');
   $check = filter_input(INPUT_GET, 'check' );
 
-  $quantity_hours_in_day = 24;
   $projects = get_projects($con, $user_id);
 
   $error_template = include_template('error.php');
