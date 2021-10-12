@@ -42,24 +42,14 @@ function get_projects($con, $user_id)
 };
 
 //  проверка на существование параметра запроса с идентификатором проекта. Если параметр присутствует, то показывать только те задачи, что относятся к этому проекту
-function get_tasks($con, $user_id, $check, $filter)
+function get_tasks($con, $user_id, $filter)
 {
-    $tasks = [];
     if (isset($_GET['project_id'])) {
         $sql_tasks = "SELECT * FROM tasks WHERE from_project = " . $_GET['project_id'];
-    } else if (isset($_GET['check'])) {
-      $task_status = "";
-        if($check == 1) {
-          $task_status = "task_status = true";
-        } else {
-          $task_status = "task_status = false";
-        }
-        $sql_task_update = "UPDATE tasks SET  " . $task_status . " WHERE id = " . $_GET['task_id'];
-        array_push($tasks, $sql_task_update);
-    } else  {
+    } else {
         // устанавливаем t.date_deadline в зависимости от параметра запроса
         $whereSql = "";
-        if($filter == 'today') {
+        if ($filter == 'today') {
             $whereSql = "t.date_deadline = CURDATE()";
         } else if ($filter == 'tomorrow') {
             $whereSql = "t.date_deadline = ADDDATE(CURDATE(),INTERVAL 1 DAY)";
@@ -158,5 +148,23 @@ function search_tasks($con, $user_id)
     $sql_search_tasks = "SELECT * FROM tasks WHERE MATCH(task_title) AGAINST('$search_word' IN BOOLEAN MODE) AND user_id = " . $user_id;
     $tasks = sql_query_result($con, $sql_search_tasks);
 
+    return $tasks;
+}
+
+function update_task($con, $check)
+{
+    $tasks = [];
+    if (isset($_GET['check'])) {
+        $task_status = "";
+        if ($check == 1) {
+            $task_status = "task_status = 1";
+        } else {
+            $task_status = "task_status = 0";
+        }
+        $sql_task_update = "UPDATE tasks SET  " . $task_status . " WHERE id = " . $_GET['task_id'];
+        // array_push($tasks, $sql_task_update);
+        $update_task = mysqli_query($con, $sql_task_update);
+        return $update_task;
+    }
     return $tasks;
 }

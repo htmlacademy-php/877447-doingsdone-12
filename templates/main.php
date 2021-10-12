@@ -36,8 +36,8 @@
       </nav>
 
       <label class="checkbox">
-        <!--добавить сюда атрибут "checked", если переменная $show_complete_tasks равна единице-->
-        <input class="checkbox__input visually-hidden show_completed" type="checkbox" <?php if ($show_complete_tasks == 1) : ?> checked <?php endif; ?>>
+        <!--добавить сюда атрибут "checked", если переменная $show_completed_tasks равна единице-->
+        <input class="checkbox__input visually-hidden show_completed" type="checkbox" <?php if ($show_completed_tasks == 1) : ?> checked <?php endif; ?>>
 
         <span class="checkbox__text">Показывать выполненные</span>
       </label>
@@ -50,11 +50,11 @@
         print($error_template);
       } else {
         foreach ($tasks as $task) {
-          if ($task['task_status'] == true && $show_complete_tasks == 0) {
+          if ($task['task_status'] == true && $show_completed_tasks == 0) {
             continue;
           }
         ?>
-          <tr class="tasks__item task <? echo (intval($task['task_status']) === 1 && $show_complete_tasks == 1) ? 'task--completed' : ''  ?>
+          <tr class="tasks__item task <? echo (intval($task['task_status']) === 1 && $show_completed_tasks == 1) ? 'task--completed' : ''  ?>
         <? echo (intval($task['task_status']) !== 1 && $task['date_deadline'] !== null && get_date_diff($task['date_deadline']) <= $quantity_hours_in_day) ? 'task--important' : '' ?>">
 
         <?php if (isset($_GET['check'])) {
@@ -62,7 +62,7 @@
         } ?>
             <td class="task__select">
               <label class="checkbox task__checkbox">
-                <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="<?= $task['id'] ?>" <?php if ($check == 1) : ?> checked <?php endif; ?>>
+                <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="<?= $task['id'] ?>">
                 <span class="checkbox__text"><?= htmlspecialchars($task['task_title']); ?></span>
               </label>
             </td>
@@ -76,8 +76,8 @@
           </tr>
       <?php }
       } ?>
-      <!--показывать следующий тег <tr/>, если переменная $show_complete_tasks равна единице-->
-      <?php if ($show_complete_tasks == 1) : ?>
+      <!--показывать следующий тег <tr/>, если переменная $show_completed_tasks равна единице-->
+      <?php if ($show_completed_tasks == 1) : ?>
         <tr class="tasks__item task task--completed">
           <td class="task__select">
             <label class="checkbox task__checkbox">
