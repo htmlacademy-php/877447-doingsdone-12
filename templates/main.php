@@ -62,7 +62,8 @@
         } ?>
             <td class="task__select">
               <label class="checkbox task__checkbox">
-                <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="<?= $task['id'] ?>">
+                <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="<?= $task['id'] ?>"
+               <?php if ($task['task_status'] == true) : ?> checked <?php endif; ?>>
                 <span class="checkbox__text"><?= htmlspecialchars($task['task_title']); ?></span>
               </label>
             </td>
