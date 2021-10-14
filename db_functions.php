@@ -162,7 +162,7 @@ function update_task($con, $check)
             $task_status = "task_status = 0";
         }
         $sql_task_update = "UPDATE tasks SET  " . $task_status . " WHERE id = " . $_GET['task_id'];
-        // array_push($tasks, $sql_task_update);
+
         $update_task = mysqli_query($con, $sql_task_update);
         return $update_task;
     }

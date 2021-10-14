@@ -42,7 +42,7 @@ if (isset($_POST['submit'])) {
 
     if (empty($errors)) {
         add_user($con, $_POST['name'], $_POST['email'], $_POST['password']);
-        header('Location: templates/success_registration.php');
+        header('Location: success_registration_index.php');
         exit;
     }
 }
