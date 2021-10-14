@@ -53,17 +53,13 @@
           if ($task['task_status'] == true && $show_completed_tasks == 0) {
             continue;
           }
-        ?>
+      ?>
           <tr class="tasks__item task <? echo (intval($task['task_status']) === 1 && $show_completed_tasks == 1) ? 'task--completed' : ''  ?>
         <? echo (intval($task['task_status']) !== 1 && $task['date_deadline'] !== null && get_date_diff($task['date_deadline']) <= $quantity_hours_in_day) ? 'task--important' : '' ?>">
 
-        <?php if (isset($_GET['check'])) {
-          $check = $_GET['check'];
-        } ?>
             <td class="task__select">
               <label class="checkbox task__checkbox">
-                <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="<?= $task['id'] ?>"
-               <?php if ($task['task_status'] == true) : ?> checked <?php endif; ?>>
+                <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="<?= $task['id'] ?>" <?php if ($task['task_status'] == true) : ?> checked <?php endif; ?>>
                 <span class="checkbox__text"><?= htmlspecialchars($task['task_title']); ?></span>
               </label>
             </td>
