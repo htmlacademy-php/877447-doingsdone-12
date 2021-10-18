@@ -40,11 +40,14 @@ if (isset($_POST['submit'])) {
                 // верный пароль, открываем сессию
                 session_start();
                 $_SESSION['user'] = $user;
-                header('Location: index.php');
+                if (empty($projects)) header('Location: add_project.php');
+                else header('Location: index.php');
             } else {
                 // неверный пароль
                 $errors['password'] = 'Неверный пароль';
             }
+        } else {
+            $errors['email'] = 'Пользователь с указанным email не найден';
         }
     }
 }

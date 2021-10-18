@@ -14,14 +14,14 @@ CREATE TABLE users (
 
 CREATE TABLE projects (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  project_title VARCHAR(255) NOT NULL UNIQUE,
+  project_title VARCHAR(255) NOT NULL,
   user_id INT NOT NULL,
   FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
 CREATE TABLE tasks (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  task_title VARCHAR(255) NOT NULL UNIQUE,
+  task_title VARCHAR(255) NOT NULL,
   user_id INT NOT NULL,
   date_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   date_deadline TIMESTAMP,
