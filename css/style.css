@@ -715,3 +715,16 @@ a:focus {
 .form__file-name {
   margin-left: 25px;
 }
+
+.success-registration__text {
+  margin-bottom: 50px;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.8;
+  color: #7e55f2;
+}
+
+.success-registration__text p {
+  margin-top: 10px;
+  margin-bottom: 0;
+}

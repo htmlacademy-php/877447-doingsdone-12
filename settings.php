@@ -5,3 +5,4 @@ require_once('db_functions.php');
 
 // создаем переменную подключения, общую на весь проект
 $con = db_connect($db_config);
+$quantity_hours_in_day = 24;

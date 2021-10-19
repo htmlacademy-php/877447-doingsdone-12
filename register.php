@@ -41,13 +41,11 @@ if (isset($_POST['submit'])) {
     $errors = array_filter($errors);
 
     if (empty($errors)) {
-
         add_user($con, $_POST['name'], $_POST['email'], $_POST['password']);
-        header('Location: index.php');
+        header('Location: success_registration_index.php');
         exit;
     }
 }
-
 $main_content = include_template('form_register.php', ['errors' => $errors]);
 
 $layout = include_template('layout.php', ['main_content' => $main_content, 'title' => $title]);
