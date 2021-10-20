@@ -1,0 +1,15 @@
+{
+    "name": "admin/doingsdone.ru",
+    "autoload": {
+        "psr-4": {
+            "Admin\\DoingsdoneRu\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ramitsan",
+            "email": "ramitsan@gmail.com"
+        }
+    ],
+    "require": {}
+}
