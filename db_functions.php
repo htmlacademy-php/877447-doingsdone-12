@@ -168,3 +168,14 @@ function update_task($con, $check)
     }
     return $tasks;
 }
+
+// Пполучение списка пользователей, у которых запланированы задачи на сегодня
+function get_users_list_with_tasks_today($con)
+{
+    $users_list = [];
+    $sql_users_list = "SELECT u.id, u.user_name, u.user_email, t.task_title, t.date_deadline FROM users u JOIN tasks t ON t.user_id = u.id WHERE t.date_deadline = CURDATE() AND t.task_status = 0";
+
+    $users_list = sql_query_result($con, $sql_users_list);
+
+    return $users_list;
+}
