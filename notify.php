@@ -4,7 +4,7 @@ require_once 'vendor/autoload.php';
 require_once 'settings.php';
 
 // Конфигурация траспорта
-$transport = new Swift_SmtpTransport("phpdemo.ru", 25);
+$transport = new Swift_SmtpTransport("mailtrap.io", 25);
 $transport->setUsername("keks@phpdemo.ru");
 $transport->setPassword("htmlacademy");
 
