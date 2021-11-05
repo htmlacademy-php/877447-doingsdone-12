@@ -9,7 +9,7 @@ require_once('db_functions.php');
  * @param array $array массив задач
  * @param string $title Название проекта
  *
- * @return number Возвращает количество задач в одном проекте
+ * @return integer Возвращает количество задач в одном проекте
  */
 function get_tasks_summ($array, $title)
 {
@@ -23,12 +23,12 @@ function get_tasks_summ($array, $title)
 };
 
 /**
- * Вычисляем разницу между датами
+ * Вычисляет разницу между датами
  * *
  * @param string $cur_date Текущая дата
  * @param string $task_date Дата дедлайна
  *
- * @return number возвращает разницу между датами
+ * @return integer возвращает разницу между датами
  */
 function get_date_diff($date)
 {
@@ -40,7 +40,7 @@ function get_date_diff($date)
 };
 
 /**
- * Получаем значения из POST-запроса
+ * Получает значения из POST-запроса
  * @param string $name
  */
 function getPostVal($name)
@@ -49,10 +49,10 @@ function getPostVal($name)
 }
 
 /**
- * Проверка на заполненность обязательного поля
+ * Проверяет на заполненность обязательного поля
  * *
  * @param string $field проверяемое поле
- *
+ *  *
  * @return string Если обязательное поле не заполнено, возвращает сообщение об ошибке
  */
 function isRequiredField($field)
@@ -63,7 +63,7 @@ function isRequiredField($field)
 }
 
 /**
- * Проверка длины поля
+ * Проверяет длину поля
  * @param integer $min Минимальное количество символов
  * @param integer $max Максимальное количество символов
  *
@@ -84,7 +84,7 @@ function isCorrectLength($name, $min, $max)
 
 
 /**
- * Валидация селекта - выбора номера проекта -  на положительность и на целое значение
+ * Проверяет селект - выбор номера проекта -  на положительность и на целое значение
  *
  * @param string $project номер проекта в селекте, изначально строка, затем приводим к целому числу
  *
@@ -104,7 +104,7 @@ function isCorrectNumberProject($project)
 }
 
 /**
- * Валидация поля выбора даты
+ * Валидирует поле выбора даты
  *
  * @param string $current_date Текущая дата
  *
@@ -139,7 +139,7 @@ function isCorrectFileSize($arr)
 }
 
 /**
- * Проверка email, который ввел пользователь
+ * Проверяет email, который ввел пользователь
  * @param string $email значение поля email
  *
  * @return string Проверяет корректность введенного email, в случае несоответствия возвращает сообщение об ошибке
@@ -157,7 +157,7 @@ function isCorrectEmail($email)
 }
 
 /**
- * Проверка password, который ввел пользователь
+ * Проверяет password, который ввел пользователь
  * @param string $password значение поля password
  *
  * @return string Проверяет корректность веденного пароля, в случае несоответствия возвращает сообщение об ошибке
