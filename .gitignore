@@ -9,3 +9,4 @@ Thumbs.db
 vendor
 uploads/*
 !uploads/.gitkeep
+settings_mail_smtp.php

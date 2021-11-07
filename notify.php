@@ -2,12 +2,13 @@
 // подключаем composer
 require_once 'vendor/autoload.php';
 require_once 'settings.php';
+require_once 'settings_mail_smtp.php';
 
 // Конфигурация траспорта
-$transport = new Swift_SmtpTransport('mailtrap.io',  25);
-$transport->setEncryption(null);
-$transport->setUsername("keks@phpdemo.ru");
-$transport->setPassword("htmlacademy");
+$transport = (new Swift_SmtpTransport('smtp.mailtrap.io', 2525))
+    ->setEncryption(null)
+    ->setUsername($mail_smtp_username)
+    ->setPassword($mail_smtp_password);
 
 $mailer = new Swift_Mailer($transport);
 
@@ -25,15 +26,15 @@ foreach($users as $user) {
 }
 
 foreach($recipients as $recipient) {
-    $message = new Swift_Message();
-    $message->setSubject("Уведомление от сервиса «Дела в порядке»");
-    $message->setFrom('keks@phpdemo.ru');
-    $message->setTo($recipient['email']);
+    $message = (new Swift_Message())
+        ->setSubject("Уведомление от сервиса «Дела в порядке»")
+        ->setFrom('keks@phpdemo.ru')
+        ->setTo($recipient['email']);
 
-    $messageContent = "Уважаемый {$recipient['name']}!";
+    $messageContent = "Уважаемый {$recipient['name']}! </br>";
 
     foreach($recipient['tasks'] as $task) {
-        $messageContent .= "У вас запланирована задача: {$task['title']} на {$task['deadline']}";
+        $messageContent .= "У вас запланирована задача: {$task['title']} на {$task['deadline']} </br>";
     }
 
     $message->setBody($messageContent, "text/html");
