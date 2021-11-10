@@ -34,6 +34,7 @@ foreach($recipients as $recipient) {
     $messageContent = "Уважаемый {$recipient['name']}! </br>";
 
     foreach($recipient['tasks'] as $task) {
+        $task['deadline'] = date('d.m.Y');
         $messageContent .= "У вас запланирована задача: {$task['title']} на {$task['deadline']} </br>";
     }
 
