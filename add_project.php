@@ -49,4 +49,4 @@ $main_content = include_template('form_project.php', ['projects' => $projects, '
 
 $layout = include_template('layout.php', ['main_content' => $main_content, 'title' => $title]);
 
-echo $layout;
+print($layout);

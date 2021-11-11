@@ -3,7 +3,7 @@
 $config_file = 'config.php';
 
 if (file_exists($config_file)) {
-    include_once $config_file;
+    require_once($config_file);
 
     function db_connect($db_config)
     {
@@ -53,6 +53,8 @@ function get_projects($con, $user_id)
         print("Ошибка подключения к базе данных " . $error);
     } else {
         $projects = [];
+        $user_id = mysqli_real_escape_string($con, $user_id);
+
         $sql_projects = "SELECT id, project_title, (SELECT COUNT(t.id) FROM tasks t WHERE t.from_project = p.id) AS c_tasks FROM projects p WHERE p.user_id = " . $user_id;
         $projects = sql_query_result($con, $sql_projects);
         return $projects;
@@ -82,6 +84,8 @@ function get_tasks($con, $user_id, $filter)
         print("Ошибка подключения к базе данных " . $error);
     } else {
         if (isset($_GET['project_id'])) {
+            $_GET['project_id'] = mysqli_real_escape_string($con, $_GET['project_id']);
+
             $sql_tasks = "SELECT * FROM tasks WHERE from_project = " . $_GET['project_id'];
         } else {
             $whereSql = "";
@@ -94,6 +98,9 @@ function get_tasks($con, $user_id, $filter)
             } else if ($filter = '' || $filter = 'all') {
                 $whereSql = '1';
             }
+
+            $user_id = mysqli_real_escape_string($con, $user_id);
+            $whereSql = mysqli_real_escape_string($con, $whereSql);
             // получение полного списка задач у текущего пользователя
             $sql_tasks = "SELECT DISTINCT t.* FROM tasks t INNER JOIN projects p ON t.from_project = t.from_project WHERE t.user_id = " . $user_id . " AND  " . $whereSql . " ORDER BY t.date_add DESC";
         }
@@ -127,10 +134,15 @@ function add_task($con, $task_title, $from_project, $date_deadline, $file, $user
         print("Ошибка подключения к базе данных " . $error);
     } else {
         $str_deadline = "";
-        if (!empty($date_deadline)) { $str_deadline = "date_deadline = '" . $date_deadline . "', ";
+        if (!empty($date_deadline)) {
+            $date_deadline = mysqli_real_escape_string($con, $date_deadline);
+
+            $str_deadline = "date_deadline = '" . $date_deadline . "', ";
         }
 
         $task_title = mysqli_real_escape_string($con, $task_title);
+        $user_id = mysqli_real_escape_string($con, $user_id);
+        $from_project = mysqli_real_escape_string($con, $from_project);
 
         $sql_add_task = "INSERT INTO tasks SET task_title = '$task_title', user_id = " . $user_id . ", from_project = '$from_project', " . $str_deadline . " file = '$file'";
         $add_task  = mysqli_query($con, $sql_add_task);
@@ -157,6 +169,7 @@ function add_project($con, $project_title, $user_id)
         print("Ошибка подключения к базе данных " . $error);
     } else {
         $project_title = mysqli_real_escape_string($con, $project_title);
+        $user_id = mysqli_real_escape_string($con, $user_id);
 
         $sql_add_project = "INSERT INTO projects SET project_title = '$project_title', user_id = " . $user_id;
         $add_project  = mysqli_query($con, $sql_add_project);
@@ -294,6 +307,9 @@ function search_tasks($con, $user_id)
     } else {
         $tasks = [];
         $search_word = $_GET['search-tasks'] ?? '';
+        $search_word = mysqli_real_escape_string($con, $search_word);
+        $user_id = mysqli_real_escape_string($con, $user_id);
+
         $sql_search_tasks = "SELECT * FROM tasks WHERE MATCH(task_title) AGAINST('$search_word' IN BOOLEAN MODE) AND user_id = " . $user_id;
         $tasks = sql_query_result($con, $sql_search_tasks);
 
@@ -328,6 +344,7 @@ function update_task($con, $check)
             } else {
                 $task_status = "task_status = 0";
             }
+            $_GET['task_id'] = mysqli_real_escape_string($con, $_GET['task_id']);
             $sql_task_update = "UPDATE tasks SET  " . $task_status . " WHERE id = " . $_GET['task_id'];
 
             $update_task = mysqli_query($con, $sql_task_update);

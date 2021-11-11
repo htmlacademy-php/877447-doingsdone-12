@@ -1,5 +1,5 @@
 <?php
-require_once('settings.php');
+require_once 'settings.php';
 
 $title = 'Регистрация';
 $required_fields = ['email', 'password', 'name']; // обязательные при регистрации поля
