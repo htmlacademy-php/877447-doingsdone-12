@@ -1,12 +1,11 @@
 <?php
-require_once('helpers.php');
-require_once('db_functions.php');
+require_once 'helpers.php';
+require_once 'db_functions.php';
 
 
 /**
  * Подсчитывает количество задач в одном проекте
- * *
- * @param array $array массив задач
+ * @param array  $array массив задач
  * @param string $title Название проекта
  *
  * @return integer Возвращает количество задач в одном проекте
@@ -24,8 +23,7 @@ function get_tasks_summ($array, $title)
 
 /**
  * Вычисляет разницу между датами
- * *
- * @param string $cur_date Текущая дата
+ * @param string $cur_date  Текущая дата
  * @param string $task_date Дата дедлайна
  *
  * @return integer возвращает разницу между датами
@@ -50,9 +48,7 @@ function getPostVal($name)
 
 /**
  * Проверяет на заполненность обязательного поля
- * *
- * @param string $field проверяемое поле
- *  *
+ * @param  string $field проверяемое поле
  * @return string Если обязательное поле не заполнено, возвращает сообщение об ошибке
  */
 function isRequiredField($field)
@@ -87,7 +83,6 @@ function isCorrectLength($name, $min, $max)
  * Проверяет селект - выбор номера проекта -  на положительность и на целое значение
  *
  * @param string $project номер проекта в селекте, изначально строка, затем приводим к целому числу
- *
  * @return string Проверяет корректность выбранного номера проекта, в случае некорректного - возвращает сообщение об ошибке
  */
 function isCorrectNumberProject($project)
@@ -105,9 +100,7 @@ function isCorrectNumberProject($project)
 
 /**
  * Валидирует поле выбора даты
- *
  * @param string $current_date Текущая дата
- *
  * @return string Проверяет корректность выбранной даты, в случае некорректной - возвращает сообщение об ошибке
  */
 function isCorrectDate($date)
@@ -126,7 +119,6 @@ function isCorrectDate($date)
 /**
  * Проверяет размер файла
  * @param array $arr массив файлов
- *
  * @return string Проверяет размер файлов, если размер превышает 5Мб, возвращает сообщение об ошибке
  */
 function isCorrectFileSize($arr)
@@ -141,7 +133,6 @@ function isCorrectFileSize($arr)
 /**
  * Проверяет email, который ввел пользователь
  * @param string $email значение поля email
- *
  * @return string Проверяет корректность введенного email, в случае несоответствия возвращает сообщение об ошибке
  */
 function isCorrectEmail($email)
@@ -159,7 +150,6 @@ function isCorrectEmail($email)
 /**
  * Проверяет password, который ввел пользователь
  * @param string $password значение поля password
- *
  * @return string Проверяет корректность веденного пароля, в случае несоответствия возвращает сообщение об ошибке
  */
 function isCorrectPassword($password)
@@ -177,9 +167,8 @@ function isCorrectPassword($password)
 
 /**
  * Рекурсивная функция поиска по массиву, проходим по каждому элементу, если элемент является массивом, то углубляемся в него и продолжаем поиск, если нет, то сравниваем с искомым значением
- *
- * @param $needle искомое значение
- * @param array $haystack массив
+ * @param $needle  искомое значение
+ * @param array   $haystack массив
  * @param boolean $strict
  *
  * @return boolean

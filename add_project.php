@@ -1,5 +1,6 @@
 <?php
-require_once('settings.php');
+
+require_once 'settings.php';
 
 $title = 'Добавить проект';
 session_start();
@@ -7,7 +8,7 @@ session_start();
 if (!isset($_SESSION['user'])) {
     header('Location: index.php');
     exit;
-};
+}
 
 $user_id = $_SESSION['user']['id'];
 $projects = get_projects($con, $user_id);
@@ -19,7 +20,7 @@ $rules_projects = [
         if (isset($_POST['name'])) {
             return isRequiredField($_POST['name']);
         }
-    }
+    },
 ];
 
 if (isset($_POST['submit'])) {
@@ -31,8 +32,8 @@ if (isset($_POST['submit'])) {
         }
     }
 
-    if (in_array_r($_POST['name'], $projects,  $strict = false)) {
-        $errors['name'] = "Такой проект уже существует";
+    if (in_array_r($_POST['name'], $projects, $strict = false)) {
+        $errors['name'] = 'Такой проект уже существует';
     }
 
     $errors = array_filter($errors);
@@ -48,4 +49,4 @@ $main_content = include_template('form_project.php', ['projects' => $projects, '
 
 $layout = include_template('layout.php', ['main_content' => $main_content, 'title' => $title]);
 
-print($layout);
+echo $layout;

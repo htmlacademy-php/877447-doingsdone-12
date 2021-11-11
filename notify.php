@@ -15,17 +15,16 @@ $mailer = new Swift_Mailer($transport);
 $users = get_users_list_with_tasks_today($con);
 $recipients = [];
 
-foreach($users as $user) {
-  $recipients[$user['id']]['name'] = $user['user_name'];
-  $recipients[$user['id']]['email'] = $user['user_email'];
-  $recipients[$user['id']]['tasks'][] = [
-      'title' => $user['task_title'],
-      'deadline' => $user['date_deadline']
-  ];
-
+foreach ($users as $user) {
+    $recipients[$user['id']]['name'] = $user['user_name'];
+    $recipients[$user['id']]['email'] = $user['user_email'];
+    $recipients[$user['id']]['tasks'][] = [
+        'title' => $user['task_title'],
+        'deadline' => $user['date_deadline']
+    ];
 }
 
-foreach($recipients as $recipient) {
+foreach ($recipients as $recipient) {
     $message = (new Swift_Message())
         ->setSubject("Уведомление от сервиса «Дела в порядке»")
         ->setFrom('keks@phpdemo.ru')
@@ -33,7 +32,7 @@ foreach($recipients as $recipient) {
 
     $messageContent = "Уважаемый {$recipient['name']}! </br>";
 
-    foreach($recipient['tasks'] as $task) {
+    foreach ($recipient['tasks'] as $task) {
         $task['deadline'] = date('d.m.Y');
         $messageContent .= "У вас запланирована задача: {$task['title']} на {$task['deadline']} </br>";
     }
@@ -44,10 +43,7 @@ foreach($recipients as $recipient) {
 
     if ($result) {
         print("Рассылка для {$recipient['name']} успешно отправлена");
-    }
-    else {
+    } else {
         print("Не удалось отправить рассылку для {$recipient['name']}");
     }
 }
-
-
