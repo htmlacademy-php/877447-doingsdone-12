@@ -1,5 +1,5 @@
 <?php
-require_once('settings.php');
+require_once 'settings.php';
 
 $title = 'Добавить задачу';
 session_start();

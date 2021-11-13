@@ -1,15 +1,14 @@
 <?php
-require_once('helpers.php');
-require_once('db_functions.php');
+require_once 'helpers.php';
+require_once 'db_functions.php';
 
 
 /**
  * Подсчитывает количество задач в одном проекте
- * *
- * @param $array массив задач
- * @param $title Название проекта
+ * @param array  $array массив задач
+ * @param string $title Название проекта
  *
- * @return number Возвращает количество задач в одном проекте
+ * @return integer Возвращает количество задач в одном проекте
  */
 function get_tasks_summ($array, $title)
 {
@@ -23,12 +22,11 @@ function get_tasks_summ($array, $title)
 };
 
 /**
- * Вычисляем разницу между датами
- * *
- * @param $cur_date Текущая дата
- * @param $task_date Дата дедлайна
+ * Вычисляет разницу между датами
+ * @param string $cur_date  Текущая дата
+ * @param string $task_date Дата дедлайна
  *
- * @return number ВВозвращает разницу между датами
+ * @return integer возвращает разницу между датами
  */
 function get_date_diff($date)
 {
@@ -40,7 +38,8 @@ function get_date_diff($date)
 };
 
 /**
- * Получаем значения из POST-запроса
+ * Получает значения из POST-запроса
+ * @param string $name
  */
 function getPostVal($name)
 {
@@ -48,8 +47,8 @@ function getPostVal($name)
 }
 
 /**
- * Проверка, является ли поле обязательным для заполнения
- * *
+ * Проверяет на заполненность обязательного поля
+ * @param  string $field проверяемое поле
  * @return string Если обязательное поле не заполнено, возвращает сообщение об ошибке
  */
 function isRequiredField($field)
@@ -60,9 +59,9 @@ function isRequiredField($field)
 }
 
 /**
- * Проверка длины поля
- * @param $min Минимальное количество символов
- * @param $max Максимальное количество символов
+ * Проверяет длину поля
+ * @param integer $min Минимальное количество символов
+ * @param integer $max Максимальное количество символов
  *
  * @return string Проверяет поле на пустоту или на допустимую длину, в случае несоответствия возвращает сообщение об ошибке
  */
@@ -81,8 +80,9 @@ function isCorrectLength($name, $min, $max)
 
 
 /**
- * Валидация селекта - выбора номера проекта -  на положительность и на целое значение
+ * Проверяет селект - выбор номера проекта -  на положительность и на целое значение
  *
+ * @param string $project номер проекта в селекте, изначально строка, затем приводим к целому числу
  * @return string Проверяет корректность выбранного номера проекта, в случае некорректного - возвращает сообщение об ошибке
  */
 function isCorrectNumberProject($project)
@@ -90,7 +90,7 @@ function isCorrectNumberProject($project)
     $result = isRequiredField($project);
 
     if (empty($result)) {
-        $number_project = (int)$project; // приводим к целому числу
+        $number_project = (int)$project;
         if ($number_project <= 0) {
             $result =  "Выберите проект из списка";
         }
@@ -99,10 +99,8 @@ function isCorrectNumberProject($project)
 }
 
 /**
- * Валидация поля выбора даты
- *
- * @param $current_date Текущая дата
- *
+ * Валидирует поле выбора даты
+ * @param string $current_date Текущая дата
  * @return string Проверяет корректность выбранной даты, в случае некорректной - возвращает сообщение об ошибке
  */
 function isCorrectDate($date)
@@ -118,7 +116,11 @@ function isCorrectDate($date)
     }
 }
 
-// проверка размера файла
+/**
+ * Проверяет размер файла
+ * @param array $arr массив файлов
+ * @return string Проверяет размер файлов, если размер превышает 5Мб, возвращает сообщение об ошибке
+ */
 function isCorrectFileSize($arr)
 {
     $file_size = $arr['file']['size'];
@@ -129,10 +131,9 @@ function isCorrectFileSize($arr)
 }
 
 /**
- * Проверка email, который ввел пользователь
- * @param $email
- *
- * @return string Проверяет корректность веденного email, в случае несоответствия возвращает сообщение об ошибке
+ * Проверяет email, который ввел пользователь
+ * @param string $email значение поля email
+ * @return string Проверяет корректность введенного email, в случае несоответствия возвращает сообщение об ошибке
  */
 function isCorrectEmail($email)
 {
@@ -147,9 +148,8 @@ function isCorrectEmail($email)
 }
 
 /**
- * Проверка password, который ввел пользователь
- * @param $password
- *
+ * Проверяет password, который ввел пользователь
+ * @param string $password значение поля password
  * @return string Проверяет корректность веденного пароля, в случае несоответствия возвращает сообщение об ошибке
  */
 function isCorrectPassword($password)
@@ -166,7 +166,12 @@ function isCorrectPassword($password)
 }
 
 /**
- * Рекурсивная функция поиска по массиву
+ * Рекурсивная функция поиска по массиву, проходим по каждому элементу, если элемент является массивом, то углубляемся в него и продолжаем поиск, если нет, то сравниваем с искомым значением
+ * @param $needle  искомое значение
+ * @param array   $haystack массив
+ * @param boolean $strict
+ *
+ * @return boolean
  */
 function in_array_r($needle, $haystack, $strict = false)
 {
@@ -175,6 +180,5 @@ function in_array_r($needle, $haystack, $strict = false)
             return true;
         }
     }
-
     return false;
 }

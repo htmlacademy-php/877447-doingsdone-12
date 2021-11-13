@@ -1,5 +1,5 @@
 <?php
-require_once('settings.php');
+require_once 'settings.php';
 
 $title = 'Успешная регистрация';
 $user_id = null;
