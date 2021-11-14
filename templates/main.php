@@ -27,12 +27,12 @@
   <div class="tasks-controls">
     <nav class="tasks-switch">
       <?php if (isset($_GET['filter'])) {
-        $filter = $_GET['filter'];
-      } ?>
-      <a href="/index.php?filter=all" class="tasks-switch__item <?= $filter == '' || $filter == 'all' ? 'tasks-switch__item--active' : '' ?> ">Все задачи</a>
-      <a href="/index.php?filter=today" class="tasks-switch__item <?= $filter == 'today' ? 'tasks-switch__item--active' : '' ?> ">Повестка дня</a>
-      <a href="/index.php?filter=tomorrow" class="tasks-switch__item <?= $filter == 'tomorrow' ? 'tasks-switch__item--active' : '' ?>">Завтра</a>
-      <a href="/index.php?filter=expired" class="tasks-switch__item <?= $filter == 'expired' ? 'tasks-switch__item--active' : '' ?>">Просроченные</a>
+    $filter = $_GET['filter'];
+} ?>
+      <a href="/index.php?filter=all" class="tasks-switch__item <?= $filter === '' || $filter === 'all' ? 'tasks-switch__item--active' : '' ?> ">Все задачи</a>
+      <a href="/index.php?filter=today" class="tasks-switch__item <?= $filter === 'today' ? 'tasks-switch__item--active' : '' ?> ">Повестка дня</a>
+      <a href="/index.php?filter=tomorrow" class="tasks-switch__item <?= $filter === 'tomorrow' ? 'tasks-switch__item--active' : '' ?>">Завтра</a>
+      <a href="/index.php?filter=expired" class="tasks-switch__item <?= $filter === 'expired' ? 'tasks-switch__item--active' : '' ?>">Просроченные</a>
     </nav>
 
     <label class="checkbox">
@@ -45,17 +45,16 @@
 
   <table class="tasks">
     <?php
-    if (count($tasks) === 0) {
-      http_response_code(404);
-      print($error_template);
+    if (count($tasks) == 0) {
+        http_response_code(404);
+        print($error_template);
     } else {
-      foreach ($tasks as $task) {
-        if ($task['task_status'] == true && $show_completed_tasks == 0) {
-          continue;
-        }
-    ?>
-        <tr class="tasks__item task <? echo (intval($task['task_status']) === 1 && $show_completed_tasks == 1) ? 'task--completed' : ''  ?>
-        <? echo (intval($task['task_status']) !== 1 && $task['date_deadline'] !== null && get_date_diff($task['date_deadline']) <= $quantity_hours_in_day) ? 'task--important' : '' ?>">
+        foreach ($tasks as $task) {
+            if ($task['task_status'] == true && $show_completed_tasks == 0) {
+                continue;
+            } ?>
+        <tr class="tasks__item task <?php echo (intval($task['task_status']) === 1 && $show_completed_tasks == 1) ? 'task--completed' : ''  ?>
+        <?php echo (intval($task['task_status']) !== 1 && $task['date_deadline'] !== null && get_date_diff($task['date_deadline']) <= $quantity_hours_in_day) ? 'task--important' : '' ?>">
 
           <td class="task__select">
             <label class="checkbox task__checkbox">
@@ -71,7 +70,8 @@
           </td>
           <td class="task__date"><?= htmlspecialchars($task['date_deadline']); ?></td>
         </tr>
-    <?php }
+    <?php
+        }
     } ?>
 
   </table>

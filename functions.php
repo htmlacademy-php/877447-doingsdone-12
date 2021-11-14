@@ -110,7 +110,7 @@ function isCorrectDate($date)
     if (!empty($date)) {
         if (!(is_date_valid($date))) {
             return "Неверный формат даты";
-        } else if (strtotime($date) < strtotime($current_date)) {
+        } elseif (strtotime($date) < strtotime($current_date)) {
             return "Дата выполнения задачи должна быть больше или равна текущей";
         }
     }
