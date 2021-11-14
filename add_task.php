@@ -48,7 +48,6 @@ if (isset($_POST['submit'])) {
 
     // валидация файлового поля
     if (empty($errors)) {
-
         $file_url = '';
         if (isset($_FILES['file']) && !empty($_FILES['file']['name'])) {
             $file_name = $_FILES['file']['name'];

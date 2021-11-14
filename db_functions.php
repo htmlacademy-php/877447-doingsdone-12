@@ -91,11 +91,11 @@ function get_tasks($con, $user_id, $filter)
             $whereSql = "";
             if ($filter == 'today') {
                 $whereSql = "t.date_deadline = CURDATE()";
-            } else if ($filter == 'tomorrow') {
+            } elseif ($filter == 'tomorrow') {
                 $whereSql = "t.date_deadline = ADDDATE(CURDATE(),INTERVAL 1 DAY)";
-            } else if ($filter == 'expired') {
+            } elseif ($filter == 'expired') {
                 $whereSql = "t.date_deadline < CURDATE()";
-            } else if ($filter = '' || $filter = 'all') {
+            } elseif ($filter = '' || $filter = 'all') {
                 $whereSql = '1';
             }
 

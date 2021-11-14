@@ -35,13 +35,15 @@ if (isset($_POST['submit'])) {
         $user = search_user($con, $_POST['email']);
 
         if ($user['user_email'] == $_POST['email']) {
-
             if (password_verify($_POST['password'], $user['user_password'])) {
                 // верный пароль, открываем сессию
                 session_start();
                 $_SESSION['user'] = $user;
-                if (empty($projects)) header('Location: add_project.php');
-                else header('Location: index.php');
+                if (empty($projects)) {
+                    header('Location: add_project.php');
+                } else {
+                    header('Location: index.php');
+                }
             } else {
                 // неверный пароль
                 $errors['password'] = 'Неверный пароль';

@@ -15,7 +15,9 @@ if (isset($_SESSION['user'])) {
 
     $error_template = include_template('error.php');
 
-    if (isset($_GET['check'])) update_task($con, $check);
+    if (isset($_GET['check'])) {
+        update_task($con, $check);
+    }
 
     if (isset($_GET['submit-search'])) {
         $tasks = search_tasks($con, $user_id);
