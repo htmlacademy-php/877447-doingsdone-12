@@ -20,7 +20,6 @@ $authorization_rules = [
 ];
 
 if (isset($_POST['submit'])) {
-
     //применяем функции валидации полей формы к каждому элементу формы внутри цикла
     foreach ($_POST as $key => $value) {
         if (isset($authorization_rules[$key])) {
@@ -34,7 +33,7 @@ if (isset($_POST['submit'])) {
     if (empty($errors)) {
         $user = search_user($con, $_POST['email']);
 
-        if ($user['user_email'] == $_POST['email']) {
+        if ($user['user_email'] === $_POST['email']) {
             if (password_verify($_POST['password'], $user['user_password'])) {
                 // верный пароль, открываем сессию
                 session_start();
