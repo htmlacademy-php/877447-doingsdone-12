@@ -16,14 +16,10 @@ $errors = [];
 
 $rules = [
     'name' => function () {
-        if (isset($_POST['name'])) {
-            return isCorrectLength($_POST['name'], 3, 50);
-        }
+        return isCorrectLength($_POST['name'], 3, 50);
     },
     'project' => function () {
-        if (isset($_POST['project'])) {
-            return isCorrectNumberProject($_POST['project']);
-        }
+        return isCorrectNumberProject($_POST['project']);
     },
     'date' => function () {
         if (isset($_POST['date'])) {
@@ -31,6 +27,7 @@ $rules = [
         }
     }
 ];
+
 
 if (isset($_POST['submit'])) {
     // если размер файла превышает допустимый, добавляем сообщение об ошибке в общий массив errors
@@ -57,11 +54,14 @@ if (isset($_POST['submit'])) {
             move_uploaded_file($_FILES['file']['tmp_name'], $file_path . $file_name);
         }
 
-        add_task($con, $_POST['name'], $_POST['project'], $_POST['date'], $file_url, $user_id);
-        header('Location: index.php');
-        exit;
+        $answ = add_task($con, $_POST['name'], $_POST['project'], $_POST['date'], $file_url, $user_id);
+        if ($answ > 0) {
+            header('Location: index.php');
+            exit;
+        }
     }
 };
+
 
 $main_content = include_template('form_task.php', ['projects' => $projects, 'errors' => $errors]);
 

@@ -53,7 +53,7 @@ function getPostVal($name)
  */
 function isRequiredField($field)
 {
-    if (empty($field)) {
+    if (!isset($field) || empty($field)) {
         return "Поле не заполнено";
     };
 }
@@ -91,7 +91,7 @@ function isCorrectNumberProject($project)
 
     if (empty($result)) {
         $number_project = (int)$project;
-        if ($number_project <= 0) {
+        if (!is_numeric($number_project) || $number_project <= 0) {
             $result =  "Выберите проект из списка";
         }
     }

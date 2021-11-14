@@ -17,9 +17,7 @@ $errors = [];
 
 $rules_projects = [
     'name' => function () {
-        if (isset($_POST['name'])) {
-            return isRequiredField($_POST['name']);
-        }
+        return isRequiredField($_POST['name']);
     },
 ];
 
@@ -39,9 +37,11 @@ if (isset($_POST['submit'])) {
     $errors = array_filter($errors);
 
     if (empty($errors)) {
-        add_project($con, $_POST['name'], $user_id);
-        header('Location: index.php');
-        exit;
+        $answ = add_project($con, $_POST['name'], $user_id);
+        if ($answ > 0) {
+            header('Location: index.php');
+            exit;
+        }
     }
 }
 
