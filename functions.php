@@ -55,7 +55,7 @@ function isRequiredField($field)
 {
     if (!isset($field) || empty($field)) {
         return "Поле не заполнено";
-    };
+    }
 }
 
 /**
@@ -90,7 +90,7 @@ function isCorrectNumberProject($project)
     $result = isRequiredField($project);
 
     if (empty($result)) {
-        $number_project = (int)$project;
+        $number_project = intval($project);
         if (!is_numeric($number_project) || $number_project <= 0) {
             $result =  "Выберите проект из списка";
         }

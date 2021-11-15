@@ -28,8 +28,12 @@ $rules = [
     }
 ];
 
-
 if (isset($_POST['submit'])) {
+    // если проекты еще не созданы, перед добавлением задачи необходимо их создать
+    if (count($projects) === 0) {
+        $errors['project'] = "Необходимо создать проект";
+    }
+
     // если размер файла превышает допустимый, добавляем сообщение об ошибке в общий массив errors
     $errors['file'] = isCorrectFileSize($_FILES);
 
@@ -61,7 +65,6 @@ if (isset($_POST['submit'])) {
         }
     }
 };
-
 
 $main_content = include_template('form_task.php', ['projects' => $projects, 'errors' => $errors]);
 

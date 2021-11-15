@@ -5,7 +5,6 @@ $title = 'Регистрация';
 $required_fields = ['email', 'password', 'name']; // обязательные при регистрации поля
 $errors = [];
 
-
 $registration_rules = [
     'email' => function () {
         return isCorrectEmail($_POST['email']);
@@ -17,8 +16,6 @@ $registration_rules = [
         return isCorrectLength($_POST['name'], 3, 25);
     }
 ];
-
-
 
 if (isset($_POST['submit'])) {
 
