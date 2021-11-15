@@ -45,7 +45,7 @@
 
   <table class="tasks">
     <?php
-    if (count($tasks) == 0) {
+    if (!isset($tasks) || count($tasks) == 0) {
         http_response_code(404);
         print($error_template);
     } else {

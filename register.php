@@ -5,25 +5,17 @@ $title = 'Регистрация';
 $required_fields = ['email', 'password', 'name']; // обязательные при регистрации поля
 $errors = [];
 
-
 $registration_rules = [
     'email' => function () {
-        if (isset($_POST['email'])) {
-            return isCorrectEmail($_POST['email']);
-        }
+        return isCorrectEmail($_POST['email']);
     },
     'password' => function () {
-        if (isset($_POST['password'])) {
-            return isCorrectPassword($_POST['password']);
-        }
+        return isCorrectPassword($_POST['password']);
     },
     'name' => function () {
-        if (isset($_POST['name'])) {
-            return isCorrectLength($_POST['name'], 3, 25);
-        }
+        return isCorrectLength($_POST['name'], 3, 25);
     }
 ];
-
 
 if (isset($_POST['submit'])) {
 
@@ -45,11 +37,14 @@ if (isset($_POST['submit'])) {
     $errors = array_filter($errors);
 
     if (empty($errors)) {
-        add_user($con, $_POST['name'], $_POST['email'], $_POST['password']);
-        header('Location: success_registration_index.php');
-        exit;
+        $answ = add_user($con, $_POST['name'], $_POST['email'], $_POST['password']);
+        if ($answ > 0) {
+            header('Location: success_registration_index.php');
+            exit;
+        }
     }
 }
+
 $main_content = include_template('form_register.php', ['errors' => $errors]);
 
 $layout = include_template('layout.php', ['main_content' => $main_content, 'title' => $title]);

@@ -36,7 +36,6 @@ if (isset($_SESSION['user'])) {
     $main_content = include_template('guest.php');
 }
 
-
 $layout = include_template('layout.php', ['main_content' => $main_content, 'title' => $title]);
 
 print($layout);

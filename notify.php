@@ -40,7 +40,6 @@ foreach ($recipients as $recipient) {
     $message->setBody($messageContent, "text/html");
     $result = $mailer->send($message);
 
-
     if ($result) {
         print("Рассылка для {$recipient['name']} успешно отправлена");
     } else {

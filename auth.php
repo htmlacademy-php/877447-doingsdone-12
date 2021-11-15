@@ -5,17 +5,12 @@ $title = 'Авторизация';
 $required_fields = ['email', 'password']; // обязательные при регистрации поля
 $errors = [];
 
-
 $authorization_rules = [
     'email' => function () {
-        if (isset($_POST['email'])) {
-            return isCorrectEmail($_POST['email']);
-        }
+        return isCorrectEmail($_POST['email']);
     },
     'password' => function () {
-        if (isset($_POST['password'])) {
-            return isCorrectPassword($_POST['password']);
-        }
+        return isCorrectPassword($_POST['password']);
     }
 ];
 
