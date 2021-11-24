@@ -4,7 +4,7 @@
   <nav class="main-navigation">
     <ul class="main-navigation__list">
       <?php foreach ($projects as $project) : ?>
-        <li class="main-navigation__list-item <?= ($project['id'] == $_GET['project_id']) ? 'main-navigation__list-item--active' : '' ?>">
+        <li class="main-navigation__list-item <?= ($project['id'] == ($_GET['project_id'] ?? '')) ? 'main-navigation__list-item--active' : '' ?>">
           <a class="main-navigation__list-item-link" href="/index.php?project_id=<?= $project['id']; ?>"><?= htmlspecialchars($project['project_title']); ?></a>
           <span class="main-navigation__list-item-count"><?= $project['c_tasks'] ?></span>
         </li>
@@ -29,14 +29,13 @@
       <?php if (isset($_GET['filter'])) {
     $filter = $_GET['filter'];
 } ?>
-      <a href="/index.php?filter=all" class="tasks-switch__item <?= $filter === '' || $filter === 'all' ? 'tasks-switch__item--active' : '' ?> ">Все задачи</a>
-      <a href="/index.php?filter=today" class="tasks-switch__item <?= $filter === 'today' ? 'tasks-switch__item--active' : '' ?> ">Повестка дня</a>
-      <a href="/index.php?filter=tomorrow" class="tasks-switch__item <?= $filter === 'tomorrow' ? 'tasks-switch__item--active' : '' ?>">Завтра</a>
-      <a href="/index.php?filter=expired" class="tasks-switch__item <?= $filter === 'expired' ? 'tasks-switch__item--active' : '' ?>">Просроченные</a>
+      <a href="/index.php?filter=all" class="tasks-switch__item <?= isset($filter) && $filter === '' || isset($filter) && $filter === 'all' ? 'tasks-switch__item--active' : '' ?> ">Все задачи</a>
+      <a href="/index.php?filter=today" class="tasks-switch__item <?= isset($filter) && $filter === 'today' ? 'tasks-switch__item--active' : '' ?> ">Повестка дня</a>
+      <a href="/index.php?filter=tomorrow" class="tasks-switch__item <?= isset($filter) && $filter === 'tomorrow' ? 'tasks-switch__item--active' : '' ?>">Завтра</a>
+      <a href="/index.php?filter=expired" class="tasks-switch__item <?= isset($filter) && $filter === 'expired' ? 'tasks-switch__item--active' : '' ?>">Просроченные</a>
     </nav>
 
     <label class="checkbox">
-      <!--добавить сюда атрибут "checked", если переменная $show_completed_tasks равна единице-->
       <input class="checkbox__input visually-hidden show_completed" type="checkbox" <?php if ($show_completed_tasks == 1) : ?> checked <?php endif; ?>>
 
       <span class="checkbox__text">Показывать выполненные</span>

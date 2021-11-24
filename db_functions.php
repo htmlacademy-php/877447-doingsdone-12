@@ -2,17 +2,29 @@
 
 $config_file = 'config.php';
 
+/**
+ * Устанавливает подключение к серверу
+ * @param array $db_config - массив параметров подключения
+ *
+ * @return $con - ресурс соединения либо false, если соединение не удалось
+ */
+function db_connect($db_config)
+{
+    $con = mysqli_connect(
+        $db_config['db_host'],
+        $db_config['db_username'],
+        $db_config['db_password'],
+        $db_config['db_name']
+    );
+    mysqli_set_charset($con, "utf-8");
+
+    return $con;
+};
+
+
 if (file_exists($config_file)) {
     require_once($config_file);
-
-    function db_connect($db_config)
-    {
-        // подключение к серверу
-        $con = mysqli_connect($db_config['db_host'], $db_config['db_username'], $db_config['db_password'], $db_config['db_name']);
-        mysqli_set_charset($con, "utf-8");
-
-        return $con;
-    };
+    db_connect($db_config); //?????
 } else {
     exit("Файл config.php не найден");
 };
@@ -21,8 +33,7 @@ if (file_exists($config_file)) {
  * Проверяет подключение к базе данных
  * @param $con - ресурс соединения
  *
- * @return false, если соединения нет
- * @return true, если соединение есть
+ * @return boolean Возвращает false, если нет соединения и true, если есть
  */
 function check_connection($con)
 {
@@ -37,16 +48,15 @@ function check_connection($con)
 
 /**
  *  Получает данные из БД
- *
  * @param $db_connect       - данные для подключения к БД
  * @param $sql_query        - SQL-запрос
- * @param $sql_result_array - преобразуем результаты SQL-запроса в массив
-
- * @return $sql_result_array - возвращаем полученный массив
+ *
+ * @return array $sql_result_array - возвращаем полученный массив
  */
 function sql_query_result($db_connect, $sql_query)
 {
     $sql_result = mysqli_query($db_connect, $sql_query);
+    //преобразуем результаты SQL-запроса в массив
     $sql_result_array = mysqli_fetch_all($sql_result, MYSQLI_ASSOC);
 
     return $sql_result_array;
@@ -63,14 +73,14 @@ function sql_query_result($db_connect, $sql_query)
  * Экранируем специальные символы в данных пользователя для использования в SQL-выражении
  * Формируем SQL-запрос, получаем список проектов для данного пользователя, преобразуем этот список в массив и записываем в $projects
  *
- * @return $projects - результат SQL-запроса, преобразованный в массив проектов
+ * @return array|null - возвращает null, если нет соединения, или $projects - результат SQL-запроса, преобразованный в массив проектов
  */
 function get_projects($con, $user_id)
 {
     if (!check_connection($con)) {
-        return;
+        return null;
     }
-    $projects = [];
+    $projects = []; // переприсваивается далее, данное значение не используется?
     $user_id = mysqli_real_escape_string($con, $user_id);
 
     $sql_projects = "SELECT id, project_title, (SELECT COUNT(t.id) FROM tasks t WHERE t.from_project = p.id) AS c_tasks FROM projects p WHERE p.user_id = " . $user_id;
@@ -96,12 +106,12 @@ function get_projects($con, $user_id)
  * Экранируем специальные символы в данных пользователя для использования в SQL-выражении
  * Получаем полный список задач у текущего пользователя и преобразуем его в массив.
  *
- * @return $tasks - результат SQL-запроса, преобразованный в массив задач
+ * @return array|null - возвращает null, если нет соединения, или $tasks - результат SQL-запроса, преобразованный в массив задач
  */
 function get_tasks($con, $user_id, $filter)
 {
     if (!check_connection($con)) {
-        return;
+        return null;
     }
     if (isset($_GET['project_id'])) {
         $_GET['project_id'] = mysqli_real_escape_string($con, $_GET['project_id']);
@@ -115,8 +125,8 @@ function get_tasks($con, $user_id, $filter)
             $whereSql = "t.date_deadline = ADDDATE(CURDATE(),INTERVAL 1 DAY)";
         } elseif ($filter === 'expired') {
             $whereSql = "t.date_deadline < CURDATE()";
-        } elseif ($filter = '' || $filter = 'all') {
-            $whereSql = '1';
+        } else {
+            $whereSql = "1";
         }
 
         $user_id = mysqli_real_escape_string($con, $user_id);
@@ -128,7 +138,6 @@ function get_tasks($con, $user_id, $filter)
     $tasks = sql_query_result($con, $sql_tasks);
     return $tasks;
 }
-
 
 
 /**
@@ -146,12 +155,12 @@ function get_tasks($con, $user_id, $filter)
  * Экранируем специальные символы в данных пользователя для использования в SQL-выражении
  * Формируем SQL-запрос на добавление задачи, получаем объект результата на основе данного запроса.
  *
- * @return $add_task - объект результата
+ * @return bool|mysqli_result|null - возвращает null, если нет соединения, или  $add_task - объект результата
  */
 function add_task($con, $task_title, $from_project, $date_deadline, $file, $user_id)
 {
     if (!check_connection($con)) {
-        return;
+        return null;
     }
     $str_deadline = "";
     if (!empty($date_deadline)) {
@@ -181,12 +190,12 @@ function add_task($con, $task_title, $from_project, $date_deadline, $file, $user
  * Экранируем специальные символы в данных пользователя для использования в SQL-выражении
  * Формируем SQL-запрос на добавление проекта, получаем объект результата на основе данного запроса.
  *
- * @return $add_project - объект результата
+ * @return bool|mysqli_result|null - возвращает null, если нет соединения, или $add_project - объект результата
  */
 function add_project($con, $project_title, $user_id)
 {
     if (!check_connection($con)) {
-        return;
+        return null;
     }
     $project_title = mysqli_real_escape_string($con, $project_title);
     $user_id = mysqli_real_escape_string($con, $user_id);
@@ -209,12 +218,12 @@ function add_project($con, $project_title, $user_id)
  * Экранируем специальные символы в данных пользователя для использования в SQL-выражении
  * Хэшируем пароль, формируем SQL-запрос на добавление пользователя, получаем объект результата на основе данного запроса.
  *
- * @return $add_user - объект результата
+ * @return bool|mysqli_result|null  - возвращает null, если нет соединения, или $add_user - объект результата
  */
 function add_user($con, $user_name, $email, $password)
 {
     if (!check_connection($con)) {
-        return;
+        return null;
     }
     $user_name = mysqli_real_escape_string($con, $user_name);
     $email = mysqli_real_escape_string($con, $email);
@@ -239,12 +248,12 @@ function add_user($con, $user_name, $email, $password)
  * Экранируем специальные символы в данных пользователя для использования в SQL-выражении
  * Формируем SQL-запрос на поиск в базе данного емейла, преобразуем полученный результат в массив.
  *
- * @return string если полученный массив содержит ноль записей, т.е. такого емейла нет, выводим пустую строку, иначе - соответствующее сообщение
+ * @return string|null - возвращает null, если нет соединения, или строку, пустую, если полученный массив содержит ноль записей, т.е. такого емейла нет, иначе - соответствующее сообщение
  */
 function get_saved_email($con, $email)
 {
     if (!check_connection($con)) {
-        return;
+        return null;
     }
     $email = mysqli_real_escape_string($con, $email);
     $sql_email = "SELECT user_email FROM users WHERE user_email = '" . $email . "'";
@@ -252,7 +261,6 @@ function get_saved_email($con, $email)
     $saved_email = sql_query_result($con, $sql_email);
     return count($saved_email) == 0 ? "" : "Пользователь с таким email уже существует";
 }
-
 
 
 /**
@@ -265,12 +273,12 @@ function get_saved_email($con, $email)
  * Экранируем специальные символы в данных пользователя для использования в SQL-выражении
  * Формируем SQL-запрос на поиск в базе данного логина, преобразуем полученный результат в массив.
  *
- * @return string если полученный массив содержит ноль записей, т.е. такого логина неи, выводим пустую строку, иначе - соответствующее сообщение
+ * @return string|null - возвращает null, если нет соединения, или строку, пустую, если полученный массив содержит ноль записей, т.е. такого логина неи, иначе - соответствующее сообщение
  */
 function get_saved_login($con, $name)
 {
     if (!check_connection($con)) {
-        return;
+        return null;
     }
     $name = mysqli_real_escape_string($con, $name);
     $sql_login = "SELECT user_name FROM users WHERE user_name = '" . $name . "'";
@@ -290,21 +298,20 @@ function get_saved_login($con, $name)
  * Экранируем специальные символы в данных пользователя для использования в SQL-выражении
  * Формируем SQL-запрос на поиск в базе данных пользователя по его емейлу, преобразуем полученный результат в массив.
  *
- * @return array возвращает первый элемент этого массива, который также является массивом данных о пользователе.
+ * @return array|null  - возвращает null, если нет соединения, или первый элемент массива, который также является массивом данных о пользователе.
  */
 function search_user($con, $email)
 {
     if (!check_connection($con)) {
-        return;
+        return null;
     }
-    $user_data = [];
     $email = mysqli_real_escape_string($con, $email);
+
     $sql_user_data = "SELECT id, user_name, user_email, user_password FROM users WHERE user_email = '" . $email . "' LIMIT 1";
     $user_data = sql_query_result($con, $sql_user_data);
 
     return $user_data[0];
 }
-
 
 
 /**
@@ -314,18 +321,17 @@ function search_user($con, $email)
  * @param  $user_id - id пользователя
  *
  * Если отсутствует подключение, завершаем выполнение функции
- * Создаем пустой массив задач, определяем слово, по которому ищем (пользователь вводит его в строке поиска).
+ * Определяем слово, по которому ищем (пользователь вводит его в строке поиска).
  * Экранируем специальные символы в данных пользователя для использования в SQL-выражении
  * Формируем SQL-запрос на поиск по данному слову, преобразуем полученный результат в массив.
  *
- * @return array возвращает полученный массив задач.
+ * @return array|null - возвращает null, если нет соединения, или полученный массив задач.
  */
 function search_tasks($con, $user_id)
 {
     if (!check_connection($con)) {
-        return;
+        return null;
     }
-    $tasks = [];
     $search_word = $_GET['search-tasks'] ?? '';
     $search_word = mysqli_real_escape_string($con, $search_word);
     $user_id = mysqli_real_escape_string($con, $user_id);
@@ -335,7 +341,6 @@ function search_tasks($con, $user_id)
 
     return $tasks;
 }
-
 
 
 /**
@@ -349,16 +354,16 @@ function search_tasks($con, $user_id)
  * Экранируем специальные символы в данных пользователя для использования в SQL-выражении
  * Формируем SQL-запрос на обновление статуса задачи в таблице tasks по id, преобразуем полученный результат в массив.
  *
- * @return array возвращает массив задач.
+ * @return bool|array|null  - возвращает null, если нет соединения, или массив задач.
  */
 function update_task($con, $check)
 {
     if (!check_connection($con)) {
-        return;
+        return null;
     }
     $tasks = [];
     if (isset($_GET['check'])) {
-        $task_status = "";
+        $task_status;
         if ($check == 1) {
             $task_status = "task_status = 1";
         } else {
@@ -374,24 +379,21 @@ function update_task($con, $check)
 }
 
 
-
 /**
  * Получает список пользователей, у которых запланированы задачи на сегодня
  *
  * @param  $con - ресурс соединения
  *
  * Если отсутствует подключение, завершаем выполнение функции
- * Создаем пустой массив пользователей.
  * Формируем SQL-запрос на получение данных пользователей и их задач, которые запланированы на текущую дату и не выполнены, преобразуем полученный результат в массив.
  *
- * @return array возвращает массив пользоателей.
+ * @return array|null - возвращает null, если нет соединения, или массив пользоателей.
  */
 function get_users_list_with_tasks_today($con)
 {
     if (!check_connection($con)) {
-        return;
+        return null;
     }
-    $users_list = [];
     $sql_users_list = "SELECT u.id, u.user_name, u.user_email, t.task_title, t.date_deadline FROM users u JOIN tasks t ON t.user_id = u.id WHERE t.date_deadline = CURDATE() AND t.task_status = 0";
 
     $users_list = sql_query_result($con, $sql_users_list);

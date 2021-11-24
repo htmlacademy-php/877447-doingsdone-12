@@ -37,8 +37,8 @@ if (isset($_POST['submit'])) {
     $errors = array_filter($errors);
 
     if (empty($errors)) {
-        $answ = add_user($con, $_POST['name'], $_POST['email'], $_POST['password']);
-        if ($answ > 0) {
+        $result = add_user($con, $_POST['name'], $_POST['email'], $_POST['password']);
+        if ($result > 0) {
             header('Location: success_registration_index.php');
             exit;
         }
