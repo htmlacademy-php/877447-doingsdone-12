@@ -167,3 +167,19 @@ function in_array_r($needle, $haystack, $strict = false)
     }
     return false;
 }
+
+/**
+ * Проверяет, авторизован ли пользователь
+ * @param array $data- данные пользователя
+ *
+ * Проверяет существование данных пользователя (ключа 'user' в массиве $_SESSION) и, в случае отсутствия, перенаправляет пользователя на главную страниццу
+ * @return boolean|null //?
+ */
+
+function isAuthorizedUser($data)
+{
+    if (!isset($data)) {
+        header('Location: index.php');
+        exit;
+    }
+}

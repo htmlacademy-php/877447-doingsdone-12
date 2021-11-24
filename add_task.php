@@ -4,10 +4,7 @@ require_once 'settings.php';
 $title = 'Добавить задачу';
 session_start();
 
-if (!isset($_SESSION['user'])) {
-    header('Location: index.php');
-    exit;
-};
+isAuthorizedUser($_SESSION['user']);
 
 $user_id = $_SESSION['user']['id'];
 $projects = get_projects($con, $user_id);
@@ -51,7 +48,7 @@ if (isset($_POST['submit'])) {
     if (empty($errors)) {
         $file_url = '';
         if (isset($_FILES['file']) && !empty($_FILES['file']['name'])) {
-            $file_name = $_FILES['file']['name'];
+            $file_name = $_POST['name'] . $_FILES['file']['name'];
             $file_path = __DIR__ . '/uploads/';
             $file_url = '/uploads/' . $file_name;
 
