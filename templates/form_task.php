@@ -5,7 +5,7 @@
     <nav class="main-navigation">
       <ul class="main-navigation__list">
         <?php foreach ($projects as $project) : ?>
-          <li class="main-navigation__list-item <?= ($project['id'] === $_GET['project_id']) ? 'main-navigation__list-item--active' : '' ?>">
+          <li class="main-navigation__list-item <?= ($project['id'] === ($_GET['project_id'] ?? '')) ? 'main-navigation__list-item--active' : '' ?>">
             <a class="main-navigation__list-item-link" href="/index.php?project_id=<?= $project['id']; ?>"><?= htmlspecialchars($project['project_title']); ?></a>
             <span class="main-navigation__list-item-count"><?= $project['c_tasks'] ?></span>
           </li>
@@ -23,7 +23,7 @@
       <div class="form__row">
         <label class="form__label" for="name">Название <sup>*</sup></label>
         <input class="form__input <?php isset($errors['name']) ? print 'form__input--error' : print ''; ?>" type="text" name="name" id="name" value="<?= htmlspecialchars(getPostVal('name')); ?>" placeholder="Введите название">
-        <p class="form__message"><?= $errors['name'] ?></p>
+        <p class="form__message"><?= $errors['name'] ?? ''; ?></p>
       </div>
 
       <div class="form__row">
@@ -33,13 +33,13 @@
             <option value=<?= $project['id']; ?> <?= intval(getPostVal('project')) === intval($project['id']) ? "selected" : ""; ?>><?= htmlspecialchars($project['project_title']); ?></option>
           <?php endforeach; ?>
         </select>
-        <p class="form__message"><?= $errors['project'] ?></p>
+        <p class="form__message"><?= $errors['project'] ?? ''; ?></p>
       </div>
 
       <div class="form__row">
         <label class="form__label" for="date">Дата выполнения</label>
         <input class="form__input form__input--date <?php isset($errors['date']) ? print 'form__input--error' : print ''; ?>" type="text" name="date" id="date" value="<?= htmlspecialchars(getPostVal('date')); ?>" placeholder="Введите дату в формате ГГГГ-ММ-ДД">
-        <p class="form__message"><?= $errors['date'] ?></p>
+        <p class="form__message"><?= $errors['date'] ?? ''; ?></p>
       </div>
 
       <div class="form__row">
@@ -54,7 +54,7 @@
           <p class="form__file-name">
             <?= isset($_FILES['file']) ? ($_FILES['file']['name']) : '';  ?>
           </p>
-          <p class="form__message"><?= $errors['file'] ?></p>
+          <p class="form__message"><?= $errors['file'] ?? ''; ?></p>
 
         </div>
       </div>

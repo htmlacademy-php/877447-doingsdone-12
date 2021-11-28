@@ -2,29 +2,9 @@
 require_once 'helpers.php';
 require_once 'db_functions.php';
 
-
-/**
- * Подсчитывает количество задач в одном проекте
- * @param array  $array массив задач
- * @param string $title Название проекта
- *
- * @return integer Возвращает количество задач в одном проекте
- */
-function get_tasks_summ($array, $title)
-{
-    $summ_tasks = 0;
-    foreach ($array as $item) {
-        if ($item['from_project'] == $title) {
-            $summ_tasks++;
-        }
-    }
-    return $summ_tasks;
-};
-
 /**
  * Вычисляет разницу между датами
- * @param string $cur_date  Текущая дата
- * @param string $task_date Дата дедлайна
+ * @param string $date  дата дедлайна
  *
  * @return integer возвращает разницу между датами
  */
@@ -49,7 +29,7 @@ function getPostVal($name)
 /**
  * Проверяет на заполненность обязательного поля
  * @param  string $field проверяемое поле
- * @return string Если обязательное поле не заполнено, возвращает сообщение об ошибке
+ * @return string|null Возвращает сообщение об ошибке, если обязательное поле не заполнено, или null, если заполнено (в условие не заходит)
  */
 function isRequiredField($field)
 {
@@ -59,11 +39,12 @@ function isRequiredField($field)
 }
 
 /**
- * Проверяет длину поля
+ * Проверяет поле на пустоту и на допустимую длину
+ * @param string $name проверяемое поле
  * @param integer $min Минимальное количество символов
  * @param integer $max Максимальное количество символов
  *
- * @return string Проверяет поле на пустоту или на допустимую длину, в случае несоответствия возвращает сообщение об ошибке
+ * @return string|null Возвращает сообщение об ошибке, если обязательное поле не заполнено или его длина не соответствует допустимой, или null, если поле заполнено и его длина соответствует допустимой (в условие не заходит)
  */
 function isCorrectLength($name, $min, $max)
 {
@@ -81,9 +62,9 @@ function isCorrectLength($name, $min, $max)
 
 /**
  * Проверяет селект - выбор номера проекта -  на положительность и на целое значение
- *
  * @param string $project номер проекта в селекте, изначально строка, затем приводим к целому числу
- * @return string Проверяет корректность выбранного номера проекта, в случае некорректного - возвращает сообщение об ошибке
+ *
+ * @return string|null Возвращает сообщение об ошибке, если обязательное поле не заполнено или номер проекта некорректен, или null, если заполнено и номер проекта корректен (в условие не заходит)
  */
 function isCorrectNumberProject($project)
 {
@@ -100,8 +81,9 @@ function isCorrectNumberProject($project)
 
 /**
  * Валидирует поле выбора даты
- * @param string $current_date Текущая дата
- * @return string Проверяет корректность выбранной даты, в случае некорректной - возвращает сообщение об ошибке
+ * @param string $date выбранная дата
+ *
+ * @return string|null Возвращает сообщение об ошибке, если выбранная дата невалидна или меньше текущей, или null, если дата валидна и больше или равна текущей
  */
 function isCorrectDate($date)
 {
@@ -119,7 +101,8 @@ function isCorrectDate($date)
 /**
  * Проверяет размер файла
  * @param array $arr массив файлов
- * @return string Проверяет размер файлов, если размер превышает 5Мб, возвращает сообщение об ошибке
+ *
+ * @return string|null Возвращает сообщение об ошибке, если размер файла превышает 5Мб, или null, если не превышает (в условие не заходит)
  */
 function isCorrectFileSize($arr)
 {
@@ -131,9 +114,10 @@ function isCorrectFileSize($arr)
 }
 
 /**
- * Проверяет email, который ввел пользователь
- * @param string $email значение поля email
- * @return string Проверяет корректность введенного email, в случае несоответствия возвращает сообщение об ошибке
+ * Проверяет поле email на заполненность и на корректность введенного значения
+ * @param string $email - значение поля email
+ *
+ * @return string|null  Возвращает сообщение об ошибке, если поле email не заполнено или заполнено некорректно,  или null, если заполнено и заполнено корректно (в условие не заходит)
  */
 function isCorrectEmail($email)
 {
@@ -150,7 +134,8 @@ function isCorrectEmail($email)
 /**
  * Проверяет password, который ввел пользователь
  * @param string $password значение поля password
- * @return string Проверяет корректность веденного пароля, в случае несоответствия возвращает сообщение об ошибке
+ *
+ * @return string|null  Возвращает сообщение об ошибке, если поле password не заполнено или заполнено некорректно,  или null, если заполнено и заполнено корректно (в условие не заходит)
  */
 function isCorrectPassword($password)
 {
@@ -181,4 +166,19 @@ function in_array_r($needle, $haystack, $strict = false)
         }
     }
     return false;
+}
+
+/**
+ * Проверяет, авторизован ли пользователь
+ * @param array $data- данные пользователя
+ *
+ * Проверяет существование данных пользователя (ключа 'user' в массиве $_SESSION) и, в случае отсутствия, перенаправляет пользователя на главную страниццу
+ */
+
+function isAuthorizedUser($data)
+{
+    if (!isset($data)) {
+        header('Location: index.php');
+        exit;
+    }
 }

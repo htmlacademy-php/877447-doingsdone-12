@@ -1,14 +1,10 @@
 <?php
-
 require_once 'settings.php';
 
 $title = 'Добавить проект';
 session_start();
 
-if (!isset($_SESSION['user'])) {
-    header('Location: index.php');
-    exit;
-}
+isAuthorizedUser($_SESSION['user']);
 
 $user_id = $_SESSION['user']['id'];
 $projects = get_projects($con, $user_id);
