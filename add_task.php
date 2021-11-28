@@ -48,7 +48,7 @@ if (isset($_POST['submit'])) {
     if (empty($errors)) {
         $file_url = '';
         if (isset($_FILES['file']) && !empty($_FILES['file']['name'])) {
-            $file_name = $_POST['name'] . $_FILES['file']['name'];
+            $file_name = $_POST['name'] . "-" . $_FILES['file']['name'];
             $file_path = __DIR__ . '/uploads/';
             $file_url = '/uploads/' . $file_name;
 

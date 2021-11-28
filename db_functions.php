@@ -1,6 +1,6 @@
 <?php
-
-$config_file = 'config.php';
+require_once 'config.php';
+require_once 'settings.php';
 
 /**
  * Устанавливает подключение к серверу
@@ -21,13 +21,6 @@ function db_connect($db_config)
     return $con;
 };
 
-
-if (file_exists($config_file)) {
-    require_once($config_file);
-    db_connect($db_config); //?????
-} else {
-    exit("Файл config.php не найден");
-};
 
 /**
  * Проверяет подключение к базе данных
@@ -69,7 +62,6 @@ function sql_query_result($db_connect, $sql_query)
  * @param $con     - ресурс соединения
  * @param $user_id - id пользователя
  * Если отсутствует подключение, завершаем выполнение функции
- * Создаем пустой массив проектов
  * Экранируем специальные символы в данных пользователя для использования в SQL-выражении
  * Формируем SQL-запрос, получаем список проектов для данного пользователя, преобразуем этот список в массив и записываем в $projects
  *
@@ -80,7 +72,6 @@ function get_projects($con, $user_id)
     if (!check_connection($con)) {
         return null;
     }
-    $projects = []; // переприсваивается далее, данное значение не используется?
     $user_id = mysqli_real_escape_string($con, $user_id);
 
     $sql_projects = "SELECT id, project_title, (SELECT COUNT(t.id) FROM tasks t WHERE t.from_project = p.id) AS c_tasks FROM projects p WHERE p.user_id = " . $user_id;
@@ -155,7 +146,7 @@ function get_tasks($con, $user_id, $filter)
  * Экранируем специальные символы в данных пользователя для использования в SQL-выражении
  * Формируем SQL-запрос на добавление задачи, получаем объект результата на основе данного запроса.
  *
- * @return bool|mysqli_result|null - возвращает null, если нет соединения, или  $add_task - объект результата
+ * @return bool|mysqli_result|null - возвращает null, если нет соединения, bool, в зависимости от того, была ли вставка данных в БД, или $add_task - объект результата
  */
 function add_task($con, $task_title, $from_project, $date_deadline, $file, $user_id)
 {
@@ -190,7 +181,7 @@ function add_task($con, $task_title, $from_project, $date_deadline, $file, $user
  * Экранируем специальные символы в данных пользователя для использования в SQL-выражении
  * Формируем SQL-запрос на добавление проекта, получаем объект результата на основе данного запроса.
  *
- * @return bool|mysqli_result|null - возвращает null, если нет соединения, или $add_project - объект результата
+ * @return bool|mysqli_result|null - возвращает null, если нет соединения, bool, в зависимости от того, была ли вставка данных в БД, или $add_project - объект результата
  */
 function add_project($con, $project_title, $user_id)
 {
@@ -218,7 +209,7 @@ function add_project($con, $project_title, $user_id)
  * Экранируем специальные символы в данных пользователя для использования в SQL-выражении
  * Хэшируем пароль, формируем SQL-запрос на добавление пользователя, получаем объект результата на основе данного запроса.
  *
- * @return bool|mysqli_result|null  - возвращает null, если нет соединения, или $add_user - объект результата
+ * @return bool|mysqli_result|null  - возвращает null, если нет соединения, bool, в зависимости от того, была ли вставка данных в БД, или $add_user - объект результата
  */
 function add_user($con, $user_name, $email, $password)
 {
@@ -235,7 +226,6 @@ function add_user($con, $user_name, $email, $password)
     $add_user  = mysqli_query($con, $sql_add_user);
     return $add_user;
 }
-
 
 
 /**
@@ -354,7 +344,7 @@ function search_tasks($con, $user_id)
  * Экранируем специальные символы в данных пользователя для использования в SQL-выражении
  * Формируем SQL-запрос на обновление статуса задачи в таблице tasks по id, преобразуем полученный результат в массив.
  *
- * @return bool|array|null  - возвращает null, если нет соединения, или массив задач.
+ * @return bool|array|null  - возвращает null, если нет соединения, bool, в зависимости от того, была ли вставка данных в БД, или $tasks - массив задач.
  */
 function update_task($con, $check)
 {
@@ -363,11 +353,9 @@ function update_task($con, $check)
     }
     $tasks = [];
     if (isset($_GET['check'])) {
-        $task_status;
+        $task_status = "task_status = 0";
         if ($check == 1) {
             $task_status = "task_status = 1";
-        } else {
-            $task_status = "task_status = 0";
         }
         $_GET['task_id'] = mysqli_real_escape_string($con, $_GET['task_id']);
         $sql_task_update = "UPDATE tasks SET  " . $task_status . " WHERE id = " . $_GET['task_id'];

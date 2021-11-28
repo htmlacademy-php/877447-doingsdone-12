@@ -173,7 +173,6 @@ function in_array_r($needle, $haystack, $strict = false)
  * @param array $data- данные пользователя
  *
  * Проверяет существование данных пользователя (ключа 'user' в массиве $_SESSION) и, в случае отсутствия, перенаправляет пользователя на главную страниццу
- * @return boolean|null //?
  */
 
 function isAuthorizedUser($data)
