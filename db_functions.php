@@ -6,7 +6,7 @@ require_once 'settings.php';
  * Устанавливает подключение к серверу
  * @param array $db_config - массив параметров подключения
  *
- * @return resource|boolean Возвращает $con - ресурс соединения либо false, если соединение не удалось
+ * @return object|boolean Возвращает $con - объект, который представляет соединение с сервером MySQL, либо false, если соединение не удалось
  */
 function db_connect($db_config)
 {
@@ -24,7 +24,7 @@ function db_connect($db_config)
 
 /**
  * Проверяет подключение к базе данных
- * @param resource $con - ресурс соединения
+ * @param object $con - объект, который представляет соединение с сервером MySQL
  *
  * @return boolean Возвращает false, если нет соединения и true, если есть
  */
@@ -41,7 +41,7 @@ function check_connection($con)
 
 /**
  *  Получает данные из БД
- * @param callback $db_connect     - данные для подключения к БД
+ * @param object $db_connect       - данные для подключения к БД
  * @param string $sql_query        - SQL-запрос
  *
  * @return array $sql_result_array - возвращает полученный массив
@@ -59,7 +59,7 @@ function sql_query_result($db_connect, $sql_query)
 /**
  * Получает список проектов текущего пользователя
  *
- * @param resource $con    - ресурс соединения
+ * @param object $con    - объект, который представляет соединение с сервером MySQL
  * @param string $user_id  - id пользователя
  * Если отсутствует подключение, завершаем выполнение функции
  * Экранируем специальные символы в данных пользователя для использования в SQL-выражении
@@ -83,7 +83,7 @@ function get_projects($con, $user_id)
 /**
  * Получает список задач текущего пользователя
  *
- * @param resource $con    - ресурс соединения
+ * @param object $con    - объект, который представляет соединение с сервером MySQL
  * @param string $user_id  - id пользователя
  * @param string $filter   - параметр запроса
  *
@@ -134,7 +134,7 @@ function get_tasks($con, $user_id, $filter)
 /**
  * Добавляет новую задачу
  *
- * @param resource $con         - ресурс соединения
+ * @param object $con           - объект, который представляет соединение с сервером MySQL
  * @param string $task_title    - название задачи
  * @param string $from_project  - к какому проекту относится
  * @param string $date_deadline - дата дедлайна
@@ -173,7 +173,7 @@ function add_task($con, $task_title, $from_project, $date_deadline, $file, $user
 /**
  * Добавляет новый проект
  *
- * @param resource $con         - ресурс соединения
+ * @param object $con           - объект, который представляет соединение с сервером MySQL
  * @param string $project_title - название проекта
  * @param string $user_id       - id пользователя
  *
@@ -200,7 +200,7 @@ function add_project($con, $project_title, $user_id)
 /**
  * Добавляет нового пользователя
  *
- * @param resource $con     - ресурс соединения
+ * @param object $con       - объект, который представляет соединение с сервером MySQL
  * @param string $user_name - имя пользователя
  * @param string $email     - email пользователя
  * @param string $password  - пароль пользователя
@@ -231,7 +231,7 @@ function add_user($con, $user_name, $email, $password)
 /**
  * Проверяет на существование email в базе
  *
- * @param resource $con - ресурс соединения
+ * @param object $con   - объект, который представляет соединение с сервером MySQL
  * @param string $email - email пользователя
  *
  * Если отсутствует подключение, завершаем выполнение функции
@@ -256,7 +256,7 @@ function get_saved_email($con, $email)
 /**
  * Проверяет на существование логина в базе
  *
- * @param resource $con - ресурс соединения
+ * @param object $con  - объект, который представляет соединение с сервером MySQL
  * @param string $name - логин пользователя
  *
  * Если отсутствует подключение, завершаем выполнение функции
@@ -281,7 +281,7 @@ function get_saved_login($con, $name)
 /**
  * Получает информацию о пользователе из БД по его емейлу (при авторизации)
  *
- * @param resource $con - ресурс соединения
+ * @param object $con   - объект, который представляет соединение с сервером MySQL
  * @param string $email - емейл пользователя
  *
  * Если отсутствует подключение, завершаем выполнение функции
@@ -307,7 +307,7 @@ function search_user($con, $email)
 /**
  * Ищет задачи по их названию
  *
- * @param resource $con   - ресурс соединения
+ * @param object $con     - объект, который представляет соединение с сервером MySQL
  * @param string $user_id - id пользователя
  *
  * Если отсутствует подключение, завершаем выполнение функции
@@ -336,7 +336,7 @@ function search_tasks($con, $user_id)
 /**
  * Обновляет статус задач при клике по чекбоксу "Выполненные"
  *
- * @param resource $con - ресурс соединения
+ * @param object $con   - объект, который представляет соединение с сервером MySQL
  * @param string $check - параметр запроса
  *
  * Если отсутствует подключение, завершаем выполнение функции
@@ -370,7 +370,7 @@ function update_task($con, $check)
 /**
  * Получает список пользователей, у которых запланированы задачи на сегодня
  *
- * @param resource $con - ресурс соединения
+ * @param object $con - объект, который представляет соединение с сервером MySQL
  *
  * Если отсутствует подключение, завершаем выполнение функции
  * Формируем SQL-запрос на получение данных пользователей и их задач, которые запланированы на текущую дату и не выполнены, преобразуем полученный результат в массив.
